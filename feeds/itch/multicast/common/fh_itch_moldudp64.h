@@ -1,16 +1,18 @@
 /*
- * This file is part of Collaborative Software Initiative Feed Handlers (CSI FH).
+ * Copyright (C) 2008, 2009, 2010 The Collaborative Software Foundation.
  *
- * CSI FH is free software: you can redistribute it and/or modify it under the terms of the
+ * This file is part of FeedHandlers (FH).
+ *
+ * FH is free software: you can redistribute it and/or modify it under the terms of the
  * GNU Lesser General Public License as published by the Free Software Foundation, either version 3
  * of the License, or (at your option) any later version.
- * 
- * CSI FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ *
+ * FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with CSI FH.  If not, see <http://www.gnu.org/licenses/>.
+ * along with FH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __FH_ITCH_MOLDUDP64_H__
@@ -46,7 +48,7 @@ inline void fh_itch_moldudp64_extract(uint8_t *buffer, fh_itch_moldudp64_t *head
 {
     /* copy the session ID as a 10 character byte array */
     memcpy(&header->session, buffer, 10);
-    
+
     /* convert the sequence number and message count to little-endian */
     header->seq_no    = ntoh64(*(uint64_t *)(buffer + 10));
     header->msg_count = ntoh16(*(uint16_t *)(buffer + 18));

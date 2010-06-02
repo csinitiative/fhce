@@ -1,16 +1,18 @@
 /*
- * This file is part of Collaborative Software Initiative Feed Handlers (CSI FH).
+ * Copyright (C) 2008, 2009, 2010 The Collaborative Software Foundation.
  *
- * CSI FH is free software: you can redistribute it and/or modify it under the terms of the
+ * This file is part of FeedHandlers (FH).
+ *
+ * FH is free software: you can redistribute it and/or modify it under the terms of the
  * GNU Lesser General Public License as published by the Free Software Foundation, either version 3
  * of the License, or (at your option) any later version.
- * 
- * CSI FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ *
+ * FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with CSI FH.  If not, see <http://www.gnu.org/licenses/>.
+ * along with FH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /* system includes */
@@ -51,13 +53,13 @@ do {                                                                            
 static inline double dbl_price(uint64_t price)
 {
     double result = 0.0;
-    
+
     /* extract the whole dollar part of the price */
     result += price / 10000;
-    
+
     /* extract the decimal part of the price */
     result += (double)(price % 10000) / 10000;
-    
+
     return result;
 }
 
@@ -141,7 +143,7 @@ void itch_alert(FH_STATUS *rc, FH_ALERT alert, fh_shr_lh_conn_t *conn)
 {
     FH_LOG(CSI, VSTATE, ("FH_PLUGIN_ALERT:%s(%s)", conn->line->config->name, conn->tag));
     FH_LOG(CSI, VSTATE, ("alert => %d", alert));
-    
+
     *rc = FH_OK;
 }
 
@@ -187,7 +189,7 @@ void itch_msg_system(FH_STATUS *rc, fh_shr_lh_conn_t *conn, fh_itch_msg_system_t
     FH_LOG(CSI, VSTATE, ("FH_PLUGIN_ITCH_MSG_SYSTEM:%s(%s)", conn->line->config->name, conn->tag));
     itch_log_msg_header(&message->header, conn);
     FH_LOG(CSI, VSTATE, ("fh_itch_msg_system_t => { event_code => '%c' }", message->event_code));
-    
+
     /* set data to message and data_length to the size of message */
     *data   = (void *)message;
     *length = sizeof(*message);
@@ -244,7 +246,7 @@ void itch_msg_stock_trade_act(FH_STATUS *rc, fh_shr_lh_conn_t *conn,
                          "'%c', reason => \"%.4s\" }",
                          message->stock, message->trading_state, message->reason));
     itch_log_sym_table(message->sym_entry);
-                             
+
     /* set data to message and data_length to the size of message */
     *data   = (void *)message;
     *length = sizeof(*message);
@@ -273,7 +275,7 @@ void itch_msg_market_part_pos(FH_STATUS *rc, fh_shr_lh_conn_t *conn,
                          message->mpid, message->stock, message->pri_mkt_mkr,
                          message->mkt_mkr_mode, message->mkt_part_state));
     itch_log_sym_table(message->sym_entry);
-    
+
     /* set data to message and data_length to the size of message */
     *data   = (void *)message;
     *length = sizeof(*message);
@@ -303,7 +305,7 @@ void itch_msg_order_add(FH_STATUS *rc, fh_shr_lh_conn_t *conn, fh_itch_msg_order
                          message->buy_sell_ind, message->stock));
     itch_log_sym_table(message->sym_entry);
     itch_log_ord_table(message->ord_entry);
-    
+
     /* set data to message and data_length to the size of message */
     *data   = (void *)message;
     *length = sizeof(*message);
@@ -334,7 +336,7 @@ void itch_msg_order_add_attr(FH_STATUS *rc, fh_shr_lh_conn_t *conn,
                          message->buy_sell_ind, message->stock, message->attribution));
     itch_log_sym_table(message->sym_entry);
     itch_log_ord_table(message->ord_entry);
-    
+
     /* set data to message and data_length to the size of message */
     *data   = (void *)message;
     *length = sizeof(*message);
@@ -362,7 +364,7 @@ void itch_msg_order_exe(FH_STATUS *rc, fh_shr_lh_conn_t *conn, fh_itch_msg_order
                          "match_no => %lu }",
                          message->order_no, message->shares, message->match_no));
     itch_log_ord_table(message->ord_entry);
-    
+
     /* set data to message and data_length to the size of message */
     *data   = (void *)message;
     *length = sizeof(*message);
@@ -391,7 +393,7 @@ void itch_msg_order_exe_price(FH_STATUS *rc, fh_shr_lh_conn_t *conn,
                          message->order_no, message->shares, message->match_no,
                          message->printable, dbl_price(message->exe_price)));
     itch_log_ord_table(message->ord_entry);
-    
+
     /* set data to message and data_length to the size of message */
     *data   = (void *)message;
     *length = sizeof(*message);
@@ -418,7 +420,7 @@ void itch_msg_order_cancel(FH_STATUS *rc, fh_shr_lh_conn_t *conn,
     FH_LOG(CSI, VSTATE, ("fh_itch_msg_order_cancel_t => { order_no => %lu, shares => %u }",
                          message->order_no, message->shares));
     itch_log_ord_table(message->ord_entry);
-    
+
     /* set data to message and data_length to the size of message */
     *data   = (void *)message;
     *length = sizeof(*message);
@@ -444,7 +446,7 @@ void itch_msg_order_delete(FH_STATUS *rc, fh_shr_lh_conn_t *conn,
     itch_log_msg_header(&message->header, conn);
     FH_LOG(CSI, VSTATE, ("fh_itch_msg_order_delete_t => { order_no => %lu }", message->order_no));
     itch_log_ord_table(message->ord_entry);
-    
+
     /* set data to message and data_length to the size of message */
     *data   = (void *)message;
     *length = sizeof(*message);
@@ -473,8 +475,8 @@ void itch_msg_order_replace(FH_STATUS *rc, fh_shr_lh_conn_t *conn,
                          message->old_order_no, message->new_order_no, message->shares,
                          dbl_price(message->price)));
     itch_log_ord_table(message->ord_entry);
-                         
-    
+
+
     /* set data to message and data_length to the size of message */
     *data   = (void *)message;
     *length = sizeof(*message);
@@ -502,7 +504,7 @@ void itch_msg_trade(FH_STATUS *rc, fh_shr_lh_conn_t *conn, fh_itch_msg_trade_t *
                          message->order_no, message->buy_sell_ind, message->shares,
                          message->stock, dbl_price(message->price), message->match_no));
     itch_log_sym_table(message->sym_entry);
-    
+
     /* set data to message and data_length to the size of message */
     *data   = (void *)message;
     *length = sizeof(*message);
@@ -531,7 +533,7 @@ void itch_msg_trade_cross(FH_STATUS *rc, fh_shr_lh_conn_t *conn, fh_itch_msg_tra
                          message->shares, message->stock, dbl_price(message->price),
                          message->match_no, message->type));
     itch_log_sym_table(message->sym_entry);
-    
+
     /* set data to message and data_length to the size of message */
     *data   = (void *)message;
     *length = sizeof(*message);
@@ -556,7 +558,7 @@ void itch_msg_trade_broken(FH_STATUS *rc, fh_shr_lh_conn_t *conn,
                          conn->line->config->name, conn->tag));
     itch_log_msg_header(&message->header, conn);
     FH_LOG(CSI, VSTATE, ("fh_itch_msg_trade_broken_t => { match_no => %lu }", message->match_no));
-    
+
     /* set data to message and data_length to the size of message */
     *data   = (void *)message;
     *length = sizeof(*message);

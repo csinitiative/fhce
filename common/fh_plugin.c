@@ -1,16 +1,18 @@
 /*
- * This file is part of Collaborative Software Initiative Feed Handlers (CSI FH).
+ * Copyright (C) 2008, 2009, 2010 The Collaborative Software Foundation.
  *
- * CSI FH is free software: you can redistribute it and/or modify it under the terms of the
+ * This file is part of FeedHandlers (FH).
+ *
+ * FH is free software: you can redistribute it and/or modify it under the terms of the
  * GNU Lesser General Public License as published by the Free Software Foundation, either version 3
  * of the License, or (at your option) any later version.
- * 
- * CSI FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ *
+ * FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with CSI FH.  If not, see <http://www.gnu.org/licenses/>.
+ * along with FH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 // System includes
@@ -31,7 +33,7 @@
 // when the plugins are being loaded, the logging sub-system is not yet initialized
 #define FH_PLUGIN_LOG(l, args) \
     do { printf("FH_PLUGIN: %-5s%s", #l":", " "); printf args; printf("\n"); } while (0)
- 
+
 
 fh_plugin_hook_t *hook_table     = NULL;    // table of hook functions
 int               allow_override = 0;       // allow existing registrations to be overriden?
@@ -50,7 +52,7 @@ FH_STATUS fh_plugin_register(int hook, fh_plugin_hook_t hook_func)
         FH_PLUGIN_LOG(ERR, ("plugin attempted to register an invalid hook %d", hook));
         return FH_ERROR;
     }
-    
+
     // if override is not allowed, and there is already a plugin registered...
     if (fh_plugin_is_hook_registered(hook)) {
         if (!allow_override) {
@@ -61,15 +63,15 @@ FH_STATUS fh_plugin_register(int hook, fh_plugin_hook_t hook_func)
             FH_PLUGIN_LOG(WARN, ("plugin hook overriden (%d)", hook));
         }
     }
-    
-    
+
+
     // if the hook table has not yet been allocated...
     if (hook_table == NULL) {
         hook_table = (fh_plugin_hook_t *)malloc((FH_PLUGIN_MAX + 1) * sizeof(fh_plugin_hook_t));
         FH_ASSERT(hook_table);
         memset(hook_table, 0, (FH_PLUGIN_MAX + 1) * sizeof(fh_plugin_hook_t));
     }
-    
+
     // register the hook function and return FH_OK
     hook_table[hook] = hook_func;
     return FH_OK;
@@ -80,9 +82,9 @@ FH_STATUS fh_plugin_register(int hook, fh_plugin_hook_t hook_func)
 void fh_plugin_dump_plugins()
 {
     int i;
-    
+
     if(hook_table == NULL) return;
-    
+
     for(i = 0; i <= FH_PLUGIN_MAX; i++) {
         FH_LOG_PGEN(DIAG, ("%d => %p", i, (void *)hook_table[i]));
     }
@@ -106,7 +108,7 @@ void fh_plugin_load(const char *plugin_dir_name)
         FH_PLUGIN_LOG(WARN, ("Invalid plugin directory or out of memory"));
         return;
     }
-    
+
     while((entry = readdir(plugin_dir))) {
         len = strlen(entry->d_name);
         if(len > 3 && entry->d_name[len - 3] == '.' && entry->d_name[len - 2] == 's' &&
@@ -114,7 +116,7 @@ void fh_plugin_load(const char *plugin_dir_name)
             snprintf(name, sizeof(name), "%s/%s", plugin_dir_name, entry->d_name);
             plugin_handle = dlopen(name, RTLD_NOW | RTLD_LOCAL);
             if(plugin_handle == NULL) {
-                FH_PLUGIN_LOG(WARN, ("Failed to load plugin: %s | Error: %s", 
+                FH_PLUGIN_LOG(WARN, ("Failed to load plugin: %s | Error: %s",
                                      entry->d_name, dlerror()));
             }
             else {
@@ -131,7 +133,7 @@ void fh_plugin_load(const char *plugin_dir_name)
  */
 bool fh_plugin_is_hook_registered(int hook)
 {
-    return (hook_table != NULL      && 
+    return (hook_table != NULL      &&
             hook >= 0               &&
             hook <= FH_PLUGIN_MAX   &&
             hook_table[hook] != NULL);

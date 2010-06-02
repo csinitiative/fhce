@@ -4,7 +4,7 @@
  * CSI FH is free software: you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation, either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * CSI FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
@@ -33,16 +33,16 @@ const char *create_config_file(const char *contents) {
     char    *filename;
     int      tmpdes;
     FILE    *outfile;
-    
+
     /* create a temp file in which to create the basic configuration file */
     filename = (char *)malloc(sizeof(char) * 100);
     strcpy(filename, "/tmp/fhtest.XXXXXX");
     tmpdes = mkstemp(filename);
     outfile = fdopen(tmpdes, "w+");
-    
+
     /* output contents to the newly created config file */
     fprintf(outfile, "%s", contents);
-    
+
     /* close the tempfile and return the filename */
     fclose(outfile);
     return filename;
@@ -59,11 +59,11 @@ fh_cfg_node_t *valid_config()
 {
     const char          *filename;
     fh_cfg_node_t       *config;
-    
-    
+
+
     filename = create_config_file(
         "foo_table = {"
-        "   size        = 100"   
+        "   size        = 100"
         "}"
     );
     config = fh_cfg_load(filename);
@@ -76,9 +76,9 @@ void test_invalid_table_name_produces_error()
 {
     fh_shr_cfg_tbl_t     tbl_config;
     fh_cfg_node_t       *config = valid_config();
-    
+
     memset(&tbl_config, 0, sizeof(fh_shr_cfg_tbl_t));
-    
+
     FH_TEST_ASSERT_NOTNULL(config);
     FH_TEST_ASSERT_EQUAL(fh_shr_cfg_tbl_load(config, "foo", &tbl_config), FH_ERR_NOTFOUND);
 }
@@ -89,12 +89,12 @@ void test_missing_enabled_property()
     fh_shr_cfg_tbl_t     tbl_config;
     const char          *filename;
     fh_cfg_node_t       *config;
-    
+
     filename = create_config_file(
         "foo_table = {"
         "}"
     );
-    
+
     config = fh_cfg_load(filename);
     delete_config_file(filename);
     memset(&tbl_config, 1, sizeof(fh_shr_cfg_tbl_t));
@@ -110,13 +110,13 @@ void test_invalid_size_property_produces_disabled_config()
     fh_shr_cfg_tbl_t     tbl_config;
     const char          *filename;
     fh_cfg_node_t       *config;
-    
+
     filename = create_config_file(
         "foo_table = {"
         "   size    = blah"
         "}"
     );
-    
+
     config = fh_cfg_load(filename);
     delete_config_file(filename);
     memset(&tbl_config, 0, sizeof(fh_shr_cfg_tbl_t));
@@ -131,7 +131,7 @@ void test_size_property_sets_table_config_properly()
 {
     fh_shr_cfg_tbl_t     tbl_config;
     fh_cfg_node_t       *config = valid_config();
-    
+
     memset(&tbl_config, 0, sizeof(fh_shr_cfg_tbl_t));
 
     FH_TEST_ASSERT_NOTNULL(config);

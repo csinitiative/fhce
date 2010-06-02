@@ -1,16 +1,18 @@
 /*
- * This file is part of Collaborative Software Initiative Feed Handlers (CSI FH).
+ * Copyright (C) 2008, 2009, 2010 The Collaborative Software Foundation.
  *
- * CSI FH is free software: you can redistribute it and/or modify it under the terms of the
+ * This file is part of FeedHandlers (FH).
+ *
+ * FH is free software: you can redistribute it and/or modify it under the terms of the
  * GNU Lesser General Public License as published by the Free Software Foundation, either version 3
  * of the License, or (at your option) any later version.
- * 
- * CSI FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ *
+ * FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with CSI FH.  If not, see <http://www.gnu.org/licenses/>.
+ * along with FH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include <stdio.h>
@@ -205,13 +207,13 @@ static void dump_service_status(int i, fh_adm_status_resp_t *status_resp)
                 uptime = (now - uptime) / 1000000;
 
                 sprintf(uptime_buffer, "%llu", (long long unsigned int)uptime);
-            }   
+            }
             else
             {
                 uptime = (uint64_t)status_resp->status_uptime * 1000000;
                 fh_time_fmt(uptime, uptime_buffer, sizeof(uptime_buffer));
             }
-        }                                           
+        }
     }
     else {
         strcpy(uptime_buffer, "N/A");
@@ -308,7 +310,7 @@ static int show_serv_status_cb(char *full_cmd, char **argv, int argc)
     fh_adm_status_resp_t   *status_resp = NULL;
     fh_adm_serv_resp_t     *serv_resp = NULL;
     char                    serv_name[16];
-    uint32_t                i; 
+    uint32_t                i;
 
     if (argc > 0) {
         char *last_arg = argv[argc-1];
@@ -354,7 +356,7 @@ static int show_serv_stats_cb(char *full_cmd, char **argv, int argc)
     fh_adm_stats_resp_t    *stats_resp = NULL;
     fh_adm_serv_resp_t     *serv_resp = NULL;
     char                    serv_name[16];
-    uint32_t                i; 
+    uint32_t                i;
 
     if (argc > 0) {
         char *last_arg = argv[argc-1];
@@ -400,7 +402,7 @@ static int show_serv_version_cb(char *full_cmd, char **argv, int argc)
     fh_adm_getver_resp_t   *getver_resp = NULL;
     fh_adm_serv_resp_t     *serv_resp = NULL;
     char                    serv_name[16];
-    uint32_t                i; 
+    uint32_t                i;
 
     if (argc > 0) {
         char *last_arg = argv[argc-1];
@@ -591,7 +593,7 @@ static void add_cli_cmd(fh_cli_cmd_t *parent, cmd_cb_list_t *ccl,
     while (ccl[j].ccl_name) {
         sprintf(help, "%s %s %s %s", action, name, type, ccl[j].ccl_name);
 
-        fh_cli_cmd_register(child, ccl[j].ccl_name, FH_CLI_CMD_MODE_DEFAULT, 
+        fh_cli_cmd_register(child, ccl[j].ccl_name, FH_CLI_CMD_MODE_DEFAULT,
                             ccl[j].ccl_cb, help);
 
         j++;
@@ -675,7 +677,7 @@ static FH_STATUS get_service_group_tree()
 
 /*
  * connect_cb
- * 
+ *
  * Connect callback. Connects to the FH manager daemon.
  */
 int connect_cb(char *full_cmd, char **argv, int argc)
@@ -830,7 +832,7 @@ FH_STATUS fh_ctl_parse_args(int argc, char *argv[])
     extern int   optind;  /* index of first unused arg */
     extern char *optarg;  /* pointer to option string  */
     int          c;
- 
+
     while ((c = getopt(argc, argv, "uc:dqh?")) != EOF) {
         switch (c) {
         case 'c':

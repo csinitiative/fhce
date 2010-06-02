@@ -1,16 +1,18 @@
 /*
- * This file is part of Collaborative Software Initiative Feed Handlers (CSI FH).
+ * Copyright (C) 2008, 2009, 2010 The Collaborative Software Foundation.
  *
- * CSI FH is free software: you can redistribute it and/or modify it under the terms of the
+ * This file is part of FeedHandlers (FH).
+ *
+ * FH is free software: you can redistribute it and/or modify it under the terms of the
  * GNU Lesser General Public License as published by the Free Software Foundation, either version 3
  * of the License, or (at your option) any later version.
- * 
- * CSI FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ *
+ * FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with CSI FH.  If not, see <http://www.gnu.org/licenses/>.
+ * along with FH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include <stdio.h>
@@ -196,7 +198,7 @@ static FH_STATUS conn_client_registration(fh_mgmt_conn_t *conn, fh_adm_cmd_t *cm
         if (rc != FH_OK) {
             return rc;
         }
-        
+
         /* force the group that this service belongs to to reload its stats report */
         serv->serv_group->sg_stats_ticks = serv->serv_group->sg_stats_period;
     }
@@ -271,7 +273,7 @@ static FH_STATUS conn_client_process(fh_mgmt_conn_t *conn)
 
 /*
  * conn_process
- * 
+ *
  * Receive data from given connection
  */
 static FH_STATUS conn_process(fh_mgmt_conn_t *conn)

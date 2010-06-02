@@ -1,16 +1,18 @@
 /*
- * This file is part of Collaborative Software Initiative Feed Handlers (CSI FH).
+ * Copyright (C) 2008, 2009, 2010 The Collaborative Software Foundation.
  *
- * CSI FH is free software: you can redistribute it and/or modify it under the terms of the
+ * This file is part of FeedHandlers (FH).
+ *
+ * FH is free software: you can redistribute it and/or modify it under the terms of the
  * GNU Lesser General Public License as published by the Free Software Foundation, either version 3
  * of the License, or (at your option) any later version.
- * 
- * CSI FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ *
+ * FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with CSI FH.  If not, see <http://www.gnu.org/licenses/>.
+ * along with FH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -133,7 +135,7 @@ FH_STATUS fh_adm_init()
  *
  * Create an admin message.
  */
-FH_STATUS fh_adm_create(int type, uint32_t tid, void *msg, 
+FH_STATUS fh_adm_create(int type, uint32_t tid, void *msg,
                         char **data, uint32_t *size)
 {
     fh_adm_def_t *adm;
@@ -180,7 +182,7 @@ FH_STATUS fh_adm_create(int type, uint32_t tid, void *msg,
     plen = length + sizeof(fh_adm_cmd_t);
     buf = malloc(plen);
     if(!buf) {
-        FH_LOG(MGMT, ERR, ("ADM_CREATE: failed to allocate output buffer: %s : %d", 
+        FH_LOG(MGMT, ERR, ("ADM_CREATE: failed to allocate output buffer: %s : %d",
                          adm->adm_name, plen));
         return FH_ERROR;
     }
@@ -385,7 +387,7 @@ fh_adm_def_t *fh_adm_getdef(int type)
  * fh_adm_recv
  *
  * Receives an admin message from a given admin socket. This function
- * returns the message that is dynamically allocated (using malloc). It is the 
+ * returns the message that is dynamically allocated (using malloc). It is the
  * responsibility of the calling function to free the memory (using free).
  */
 FH_STATUS fh_adm_recv(int fd, char **msg)

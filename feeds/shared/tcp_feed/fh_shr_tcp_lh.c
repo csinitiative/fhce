@@ -4,7 +4,7 @@
  * CSI FH is free software: you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation, either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * CSI FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
@@ -45,7 +45,7 @@ uint32_t  nxt_seqNum = 0;   /* Next sequence number to expect  */
                                    /* Current session we have         */
 char cur_session[10] = {0x20,0x20,0x20,0x20,
                         0x20,0x20,0x20,0x20,
-                        0x20,0x20}; 
+                        0x20,0x20};
 
 /* START ONLY ONE LINE HANDLER THREAD AT A TIME -- this code is not intended to be thread safe */
 static pthread_t                     lh_thread;     /* line handler thread */
@@ -123,15 +123,15 @@ inline void process_end_of_session(int * socketp)
 
 /*
  *  Send a HB message and process the state of the line on the return
- *  This function is called to also determine the health of the 
+ *  This function is called to also determine the health of the
  *  connection.
  */
 static FH_STATUS  send_hb_msg(int * socketp, fh_shr_cfg_lh_line_t *line,fh_info_stats_t *stats,int * new_connection)
-{ 
+{
     static char hb[2] = {'R',0x0A};
     ssize_t scount = 0;
     FH_STATUS rc;
- 
+
     if (stats) {}
     /* send the HB message here since we haven't received any traffic */
     /* for a minute                                                   */
@@ -149,21 +149,21 @@ static FH_STATUS  send_hb_msg(int * socketp, fh_shr_cfg_lh_line_t *line,fh_info_
             }
             *new_connection = 1;
         }
-        
+
     }
     return FH_OK;
-} 
+}
 
 /*
  * Get the debug message from the buffer and publish the message
- * 
+ *
  */
 static inline int get_and_send_debug_msg(int *socketp,char *rx_buf)
 {
     int     len,i;
     int     to_get = 51;
     while(1){
-        len = recv(*socketp, rx_buf, to_get,MSG_PEEK|MSG_DONTWAIT) ; 
+        len = recv(*socketp, rx_buf, to_get,MSG_PEEK|MSG_DONTWAIT) ;
         if ( len == -1) {
             continue;
         } else if ( (len == 0)) {
@@ -171,7 +171,7 @@ static inline int get_and_send_debug_msg(int *socketp,char *rx_buf)
         } else { // could be upto to_get count
             for ( i = 0; i < len ; i++) {
                 if ( rx_buf[i] == 0x0A ){
-                /* we have found the end of this message and are able 
+                /* we have found the end of this message and are able
                  * to get to the start of the next message
                  * Throw away the current message as incomplete.
                  */
@@ -192,7 +192,7 @@ static inline int get_and_send_debug_msg(int *socketp,char *rx_buf)
 /*
  *  Get the remaining characters of the attributed quote message data
  *  When this function is called, we have already received 47 bytes
- *  what is missing is the last 4 bytes of the message, the 3 
+ *  what is missing is the last 4 bytes of the message, the 3
  *  remaining bytes of the MMID field and the LF end of message indicator.
  */
 
@@ -229,11 +229,11 @@ inline static void find_next_message(int *socketp, int* status)
 {
     int reclen, i;
     char rx_buff[100];
-    
+
     /* make sure we have sometime before we try to find the next message */
     usleep(10000);
-    
-    reclen = recv(*socketp, rx_buff, 51,MSG_PEEK|MSG_DONTWAIT) ; 
+
+    reclen = recv(*socketp, rx_buff, 51,MSG_PEEK|MSG_DONTWAIT) ;
     if ( reclen == -1) {
         FH_LOG(LH,INFO, (" Error on finding next message start = %d",errno));
         *status = FH_ERROR;
@@ -242,11 +242,11 @@ inline static void find_next_message(int *socketp, int* status)
         *status = FH_ERROR;
     } else if ( (reclen > 0) && (reclen <= 51) ) {
         for ( i = 0; i < reclen ; i++) {
-            if ( rx_buff[i] == 0x0A ) 
+            if ( rx_buff[i] == 0x0A )
                 break;
         }
         if ( i <= 51 ){
-            /* we have found the end of this message and are able 
+            /* we have found the end of this message and are able
              * to get to the start of the next message
              * Throw away the current message as incomplete.
              */
@@ -259,7 +259,7 @@ inline static void find_next_message(int *socketp, int* status)
         } else {
             *status = FH_ERROR;
         }
-            
+
     }
 }
 
@@ -269,7 +269,7 @@ inline static void find_next_message(int *socketp, int* status)
  * is satisfied.
  */
 static inline void dir_edge_reconnect(int *socketp, fh_shr_cfg_lh_line_t *  line)
-{ 
+{
     FH_STATUS rc;
     int count = 0;
     static int first_time = 0;
@@ -303,7 +303,7 @@ static inline void dir_edge_reconnect(int *socketp, fh_shr_cfg_lh_line_t *  line
     monitor_hb_count = HB_ALARM_TIMEOUT;
 }
 /*
- * Actual Body of the TCP line handler   
+ * Actual Body of the TCP line handler
  */
 
 static void *fh_shr_tcp_lh_run(void *arg)
@@ -322,14 +322,14 @@ static void *fh_shr_tcp_lh_run(void *arg)
     /* this connection only deals with one line  */
     char            *thread_name = NULL;
     int                 *socketp = &lh_process.lines[0].primary.socket;
-    fh_info_stats_t       *stats = &lh_process.lines[0].primary.stats;    
-    
+    fh_info_stats_t       *stats = &lh_process.lines[0].primary.stats;
+
     fh_shr_lh_conn_t *     conn  = &lh_process.lines[0].primary;
 
     char            rx_buf[2048];
-    
+
     fh_shr_cfg_lh_line_t *  line = &config->lines[0];
-    
+
     uint32_t  primary_addr       = line->primary.address;
     uint16_t  primary_port       = line->primary.port;
 
@@ -347,23 +347,23 @@ static void *fh_shr_tcp_lh_run(void *arg)
         FH_LOG(LH, WARN, ("failed to assign CPU affinity %d to LH thread", config->cpu));
     }
 
-    /* 
-     * allocate space for, generate, and log a "thread started" message for 
-     * this thread's name 
+    /*
+     * allocate space for, generate, and log a "thread started" message for
+     * this thread's name
      */
     thread_name = fh_util_thread_name("LH", config->name);
     fh_log_thread_start(thread_name);
 
     /* give the message parser a chance to initialize itself */
     lh_callbacks->init(&lh_process);
-    
+
 
     /* start to connect to the server for the TCP connection  */
     if ( (primary_addr == 0) || (primary_port == 0)) {
         FH_LOG(LH, ERR, ("failed to get address and port to connect to %s %s",primary_addr, primary_port));
         exit(1);
     }
-    
+
     /* connect and login if possible. It will wait till it can succeed*/
     dir_edge_reconnect(socketp, line);
 
@@ -377,20 +377,20 @@ static void *fh_shr_tcp_lh_run(void *arg)
 
 
         memcpy(&fds, &rdfds, sizeof(fd_set));
-        
+
         retval = select((*socketp)+1, &fds, NULL, NULL,&tv );
         if (( retval == -1 ) && ( errno != EINTR)) {
             /* an error occured  */
             FH_LOG(LH, INFO, (" select returned an error %d",errno));
             tv.tv_sec = 1;
             tv.tv_usec = 0;
-            // Assume the connection is gone if EDABF errno 
+            // Assume the connection is gone if EDABF errno
             if ( errno == EBADF){
                 dir_edge_reconnect(socketp, line);
                 FD_ZERO(&rdfds);
                 FD_SET(*socketp, &rdfds);
             }
-            
+
         } else if( retval == 0 ) {
             /* we have a timeout condition */
             static int new_conn = 0;
@@ -413,7 +413,7 @@ static void *fh_shr_tcp_lh_run(void *arg)
                 FD_SET(*socketp, &rdfds);
             }
             continue;
-            
+
         } else {
             /* now we can go and get the data                     */
             /* First peek inside the message and then determine   */
@@ -439,7 +439,7 @@ static void *fh_shr_tcp_lh_run(void *arg)
 
                     if (hook_msg_flush) {
                         hook_msg_flush(&rc);
-                    } 
+                    }
                     stats->messages++;
                     stats->bytes += offset+still_more;
                     offset = 0;
@@ -470,8 +470,8 @@ static void *fh_shr_tcp_lh_run(void *arg)
                 }
             }
             while (1) {
-                //reclen = recv(*socketp, rx_buf, 10,MSG_PEEK|MSG_DONTWAIT) ; 
-                reclen = recv(*socketp, &rx_buf[part_rx], (10 - part_rx),MSG_PEEK|MSG_DONTWAIT) ; 
+                //reclen = recv(*socketp, rx_buf, 10,MSG_PEEK|MSG_DONTWAIT) ;
+                reclen = recv(*socketp, &rx_buf[part_rx], (10 - part_rx),MSG_PEEK|MSG_DONTWAIT) ;
                 if ( reclen == -1) {
                     FH_LOG(LH,VSTATE, (" Errno on receive = %d",errno));
                     if( errno != EAGAIN) break;
@@ -490,7 +490,7 @@ static void *fh_shr_tcp_lh_run(void *arg)
                     offset = 0;
                     stats->message_errors++;
                     break;
-                    
+
                     //} else if ( reclen == 10 ) {
                 } else if ( (reclen + part_rx) == 10 ) {
                     if(rx_buf[0] == 'S') {
@@ -532,14 +532,14 @@ static void *fh_shr_tcp_lh_run(void *arg)
                                 add_order = 0;
                             }
                             lh_callbacks->parse(rx_buf, len_to_rec+len, rx_char,conn,line, &dir_edge_seq_num);
-                         
+
                             if (FH_LL_OK(LH, STATS)) {
                                 FH_PROF_END(lh_proc_latency);
                             }
                             len = 0;
                             if (hook_msg_flush) {
                                 hook_msg_flush(&rc);
-                            } 
+                            }
                             stats->messages++;
                             //stats->bytes += reclen;
                             stats->bytes += len_to_rec;
@@ -569,7 +569,7 @@ static void *fh_shr_tcp_lh_run(void *arg)
                             FH_LOG(LH, ERR, (" on recv got error errno = %d",errno));
                             part_rx = 0;
                             break;
-                        } 
+                        }
                     } else {
                         if(rx_buf[0] == '+'){
                             /** Received a Debug message **/
@@ -619,7 +619,7 @@ static void *fh_shr_tcp_lh_run(void *arg)
                             /* Normally not a problem unless the other side suddenly breaks   */
                             /* a connection ::) Should never happen, but will happen if I dont*/
                             /* fix it.                                                        */
-                            
+
                             rx_count = recv(*socketp,rx_buf,reclen,0);
                             if ( rx_count == reclen ) {
                                 part_rx = rx_count;
@@ -644,11 +644,11 @@ static void *fh_shr_tcp_lh_run(void *arg)
                 }
             }/* END WHILE */
         }
-        
-        
 
-    } /* end while loop */        
-    
+
+
+    } /* end while loop */
+
     /* if we get here, success so return a NULL pointer */
     return NULL;
 }
@@ -709,7 +709,7 @@ static FH_STATUS add_connection(const fh_cfg_node_t *config, const char *name,
     const fh_cfg_node_t  *node      = NULL;
     const char           *property  = NULL;
     struct in_addr        address;
-    
+
     /* fetch the connection node for this connection */
     node = fh_cfg_get_node(config, name);
 
@@ -724,24 +724,24 @@ static FH_STATUS add_connection(const fh_cfg_node_t *config, const char *name,
      * be yes or no, otherwise log an error and disable it
      */
     switch(fh_cfg_set_yesno(node, "enabled", &conn->enabled)) {
-            
+
     /* if there is a valid enabled property, return if it is set to no */
     case FH_OK:
         if (!conn->enabled) return FH_OK;
         break;
-        
+
     /* if the enabled property was not found log a warning (default = disabled) */
     case FH_ERR_NOTFOUND:
         FH_LOG(CSI, WARN, ("connection %s: missing property 'enabled'...disabling", name));
         return FH_ERR_NOTFOUND;
-        
+
     /* any other error, warn about invalid value for property */
     default:
         FH_LOG(CSI, WARN, ("connection %s: property 'enabled' must be 'yes' or 'no'", name));
         return FH_ERROR;
     }
-    
-    /* 
+
+    /*
      * if we have gotten here either the connection is explicitly enabled or the enabled
      * property was not present...set the address
      */
@@ -751,7 +751,7 @@ static FH_STATUS add_connection(const fh_cfg_node_t *config, const char *name,
         return FH_ERROR;
     }
     conn->address = address.s_addr;
-    
+
     /* set the connection's port address */
     switch(fh_cfg_set_uint16(node, "port", &conn->port)) {
 
@@ -761,7 +761,7 @@ static FH_STATUS add_connection(const fh_cfg_node_t *config, const char *name,
     case FH_ERR_NOTFOUND:
         FH_LOG(CSI, WARN, ("connection %s: missing port address property", name));
         return FH_ERR_NOTFOUND;
-        
+
     default:
         FH_LOG(CSI, ERR, ("connection %s: invalid port address", name));
         return FH_ERROR;
@@ -774,11 +774,11 @@ static FH_STATUS add_connection(const fh_cfg_node_t *config, const char *name,
         return FH_ERR_NOTFOUND;
     }
     strcpy(conn->interface, property);
-    
+
     /* if we manage to get here, connection was enabled and configured */
     conn->enabled = 1;
     return FH_OK;
-}                            
+}
 
 
 /**
@@ -795,21 +795,21 @@ static FH_STATUS add_line(const fh_cfg_node_t *config, const char *name,
     const fh_cfg_node_t  *lines_node    = NULL;
     const fh_cfg_node_t  *line_node     = NULL;
     fh_shr_cfg_lh_line_t *line;
-    
+
     /* fetch the lines node */
     lines_node = fh_cfg_get_node(config, "direct_edge.lines");
     if (lines_node == NULL) {
         FH_LOG(CSI, ERR, ("missing configuration option 'lines'"));
         return FH_ERROR;
     }
-    
+
     /* fetch the node for the specific line being added */
     line_node = fh_cfg_get_node(lines_node, name);
     if (line_node == NULL) {
         FH_LOG(CSI, ERR, ("missing configuration for line '%d'", name));
         return FH_ERROR;
     }
-    
+
     /* allocate space for the new line */
     lh_config->lines = (fh_shr_cfg_lh_line_t *)realloc(lh_config->lines,
                         sizeof(fh_shr_cfg_lh_line_t) * (lh_config->num_lines + 1));
@@ -817,25 +817,25 @@ static FH_STATUS add_line(const fh_cfg_node_t *config, const char *name,
         FH_LOG(CSI, ERR, ("unable to allocate memory for line '%s'", name));
         return FH_ERROR;
     }
-    
+
     /* initialize the data for the new line */
     line = &lh_config->lines[lh_config->num_lines++];
     memset(line, 0, sizeof(fh_shr_cfg_lh_line_t));
     line->process = lh_config;
     strcpy(line->name, name);
-    
+
     /* set up the connections for the new line */
     if (add_connection(line_node, "primary", &line->primary) != FH_OK) {
         line->primary.line = line;
         return FH_ERROR;
     }
-    
+
      /* set up the logging in info for that line */
     if ( add_login_info(line_node, "login", &line->primary) != FH_OK) {
         return FH_ERROR;
 
     }
-    
+
     /* if we get here, success! */
     return FH_OK;
 }
@@ -858,20 +858,20 @@ FH_STATUS fh_shr_cfg_tcp_lh_load(const char *process, const fh_cfg_node_t *confi
     const fh_cfg_node_t  *lines_node    = NULL;
     int                   i;
     FH_STATUS             rc;
-    
+
     /* initialize the process configuration structure we have been passed */
     memset(lh_config, 0, sizeof(fh_shr_cfg_lh_proc_t));
 
     /* build the full, expected node name of the process configuration and fetch the node */
     sprintf(process_node_name, "direct_edge.processes.%s", process);
     process_node = fh_cfg_get_node(config, process_node_name);
-    
+
     /* if the returned node is NULL, the process config doesn't exist */
     if (process_node == NULL) {
         FH_LOG(CSI, ERR, ("no process configuration for '%s'", process));
         return FH_ERROR;
     }
-    
+
     /* copy the process name into the process configuration structure */
     strcpy(lh_config->name, process_node->name);
 
@@ -885,31 +885,31 @@ FH_STATUS fh_shr_cfg_tcp_lh_load(const char *process, const fh_cfg_node_t *confi
         FH_LOG(CSI, WARN, ("process %s: missing CPU specification", process));
         lh_config->cpu = -1;
         break;
-        
+
     default:
         FH_LOG(CSI, WARN, ("process %s: invalid CPU specification", process));
         lh_config->cpu = -1;
         break;
     }
-    
+
     /* load table configurations */
     fh_shr_cfg_tbl_load(config, "direct_edge.symbol_table", &lh_config->symbol_table);
     fh_shr_cfg_tbl_load(config, "direct_edge.order_table", &lh_config->order_table);
-    
+
     /* load lines node for this process */
     lines_node = fh_cfg_get_node(process_node, "lines");
     if (lines_node == NULL) {
         FH_LOG(CSI, ERR, ("process configuration '%s' contains no lines", process));
         return FH_ERROR;
     }
-    
+
     /* go through every line entry, loading the line that corresponds */
     for (i = 0; i < lines_node->num_values; i++) {
         if (add_line(config, lines_node->values[i], lh_config) != FH_OK) {
             return FH_ERROR;
         }
     }
-    
+
     /* allow a plugin the chance to modify the loaded configuration */
     if (fh_plugin_is_hook_registered(FH_PLUGIN_CFG_LOAD)) {
         fh_plugin_get_hook(FH_PLUGIN_CFG_LOAD)(&rc, lh_config);
@@ -918,7 +918,7 @@ FH_STATUS fh_shr_cfg_tcp_lh_load(const char *process, const fh_cfg_node_t *confi
             return rc;
         }
     }
-    
+
     /* if we get here, success! */
     return FH_OK;
 }
@@ -953,10 +953,10 @@ static FH_STATUS fh_shr_tcp_lh_init(fh_shr_cfg_lh_proc_t *config)
         line        = &lh_process.lines[i];
         primary     = &line->primary;
 
-        
+
         /* initialize the line's next expected sequence number */
         line->next_seq_no = 1;
-        
+
         /* link this line's process pointer back to this process */
         line->process = &lh_process;
 
@@ -987,7 +987,7 @@ static FH_STATUS fh_shr_tcp_lh_init(fh_shr_cfg_lh_proc_t *config)
     if (fh_plugin_is_hook_registered(FH_PLUGIN_MSG_FLUSH)) {
         hook_msg_flush = fh_plugin_get_hook(FH_PLUGIN_MSG_FLUSH);
     }
-    
+
     /* indicate that initialization is complete */
     lh_init = 1;
 
@@ -1100,7 +1100,7 @@ void fh_shr_tcp_lh_snap_stats()
 {
    /* if line handler initialization is not complete, just return */
     if (!lh_init || !FH_LL_OK(LH, XSTATS)) return;
-    
+
     /* persistent data across calls */
     static uint64_t messages      = 0;
     static uint64_t errors        = 0;
@@ -1131,7 +1131,7 @@ void fh_shr_tcp_lh_snap_stats()
 /*
  * Display collected latency statistics
  */
-/*  
+/*
  * fh_opra_lh_latency
  *
  * Dumps some statistics about latency when enabled.
@@ -1139,11 +1139,11 @@ void fh_shr_tcp_lh_snap_stats()
 void fh_shr_tcp_lh_latency()
 {
     if (FH_LL_OK(LH, STATS)) {
-        FH_PROF_PRINT(lh_recv_latency); 
+        FH_PROF_PRINT(lh_recv_latency);
         FH_PROF_PRINT(lh_proc_latency);
     }
 }
-  
+
 /*
  * Converts stats from internal line handler representation to the proper structure for
  * return to an FH manager

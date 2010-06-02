@@ -4,7 +4,7 @@
  * CSI FH is free software: you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation, either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * CSI FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
@@ -31,14 +31,14 @@
 fh_shr_gap_fill_list_t *fh_shr_gap_fill_new(uint32_t max, uint32_t timeout)
 {
     fh_shr_gap_fill_list_t *list;
-    
+
     /* allocate memory for the list structure (return NULL if ) */
     list = (fh_shr_gap_fill_list_t *)malloc(sizeof(fh_shr_gap_fill_list_t));
     if (list == NULL) {
         FH_LOG(CSI, ERR, ("failed to allocate memory for gap fill list (%d)", errno));
         return NULL;
     }
-    
+
     /* initialize the newly allocated memory */
     memset(list, 0, sizeof(fh_shr_gap_fill_list_t));
     list->max = max;
@@ -46,7 +46,7 @@ fh_shr_gap_fill_list_t *fh_shr_gap_fill_new(uint32_t max, uint32_t timeout)
 
     /* allocate a memory pool from which entries will come */
     list->data = fh_mpool_new("gap_list", sizeof(fh_shr_gap_fill_node_t), list->max, 0);
-    
+
     /* return the initialized list */
     return list;
 }

@@ -1,16 +1,18 @@
 /*
- * This file is part of Collaborative Software Initiative Feed Handlers (CSI FH).
+ * Copyright (C) 2008, 2009, 2010 The Collaborative Software Foundation.
  *
- * CSI FH is free software: you can redistribute it and/or modify it under the terms of the
+ * This file is part of FeedHandlers (FH).
+ *
+ * FH is free software: you can redistribute it and/or modify it under the terms of the
  * GNU Lesser General Public License as published by the Free Software Foundation, either version 3
  * of the License, or (at your option) any later version.
- * 
- * CSI FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ *
+ * FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with CSI FH.  If not, see <http://www.gnu.org/licenses/>.
+ * along with FH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 // System headers
@@ -30,18 +32,18 @@ const char *create_basic_config_file() {
     char    *filename;
     int      tmpdes;
     FILE    *outfile;
-    
+
     // create a temp file in which to create the basic configuration file
     filename = (char *)malloc(sizeof(char) * 100);
     strcpy(filename, "/tmp/fhtest.XXXXXX");
     tmpdes = mkstemp(filename);
     outfile = fdopen(tmpdes, "w+");
-    
+
     // output a basic configuration file with all of the elements available in config files
     fprintf(outfile, "foo = { bar:123 baz:\"string with spaces\" }\n");
     fprintf(outfile, "  # indented comment\n");
     fprintf(outfile, "array = ( 1, \"string with spaces\", 123 )\n");
-    
+
     // close the tempfile and return the filename
     fclose(outfile);
     return filename;
@@ -57,7 +59,7 @@ void delete_config_file(const char *filename)
 void test_basic_config_file_parses_successfully()
 {
     const char *filename;
-    
+
     filename = create_basic_config_file();
     FH_TEST_ASSERT_NOTNULL(fh_cfg_load(filename));
     delete_config_file(filename);
@@ -68,13 +70,13 @@ void test_invalid_config_file_fails_to_parse()
 {
     const char *filename;
     FILE       *file;
-    
+
     // add some invalid syntax to the config file
     filename = create_basic_config_file();
     file = fopen(filename, "a+");
     fprintf(file, "invalid;abcdefg:123\n");
     fclose(file);
-    
+
     FH_TEST_ASSERT_NULL(fh_cfg_load(filename));
     delete_config_file(filename);
 }
@@ -141,7 +143,7 @@ void test_get_array_returns_expected_array_for_valid_path()
     filename = create_basic_config_file();
     config = fh_cfg_load(filename);
     FH_TEST_ASSERT_NOTNULL(config);
-    
+
     strings = fh_cfg_get_array(config, "array");
     FH_TEST_ASSERT_STREQUAL(strings[0], "1");
     FH_TEST_ASSERT_STREQUAL(strings[1], "string with spaces");

@@ -1,16 +1,18 @@
 /*
- * This file is part of Collaborative Software Initiative Feed Handlers (CSI FH).
+ * Copyright (C) 2008, 2009, 2010 The Collaborative Software Foundation.
  *
- * CSI FH is free software: you can redistribute it and/or modify it under the terms of the
+ * This file is part of FeedHandlers (FH).
+ *
+ * FH is free software: you can redistribute it and/or modify it under the terms of the
  * GNU Lesser General Public License as published by the Free Software Foundation, either version 3
  * of the License, or (at your option) any later version.
- * 
- * CSI FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ *
+ * FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with CSI FH.  If not, see <http://www.gnu.org/licenses/>.
+ * along with FH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include <stdio.h>
@@ -50,17 +52,17 @@ void fh_mgmt_serv_sigterm(int signal)
 {
     fh_mgmt_sg_t    *sg     = NULL;
     fh_mgmt_serv_t  *serv   = NULL;
-    
+
     /* suppress warnings */
     if (signal) {}
-    
+
     /* print an informational message that the SIGTERM was received */
     FH_LOG(MGMT, INFO, ("Received SIGTERM -- killing services that need to be killed"));
-    
+
     /* loop through each service group, then through each service */
     TAILQ_FOREACH(sg, &sg_list, sg_le) {
-        TAILQ_FOREACH(serv, &sg->sg_serv_lh, serv_le) {            
-            /* 
+        TAILQ_FOREACH(serv, &sg->sg_serv_lh, serv_le) {
+            /*
              * if the service is configured to be killed, and is running, and has a connection
              * associated with it, and the request to stop the service fails, then display an
              * error
@@ -72,7 +74,7 @@ void fh_mgmt_serv_sigterm(int signal)
             }
         }
     }
-    
+
     /* once all killable feed handlers have been killed, time to exit */
     exit(0);
 }
@@ -94,10 +96,10 @@ void fh_mgmt_serv_init(uint32_t spawn_delay)
     if (mgmt_stats_report) {
         FH_LOG(MGMT, STATE, ("Management statistics report plugin loaded"));
     }
-    
+
     /* install a sigterm handler that will kill all processes that need killing */
     signal(SIGTERM, &fh_mgmt_serv_sigterm);
-    
+
     /* set the default service group spawn delay to the value passed in */
     sg_spawn_delay = spawn_delay;
 }
@@ -154,11 +156,11 @@ void fh_mgmt_sg_restart_time(fh_mgmt_sg_t *sg, uint32_t restart_time)
     secs_after_midnight = tm.tm_hour * 3600 +
                           tm.tm_min  * 60   +
                           tm.tm_sec;
-    
+
     if (secs_after_midnight <= sg->sg_restart_time) {
         sg->sg_restart_ticks = sg->sg_restart_deadline +
                                secs_after_midnight - sg->sg_restart_time;
-                               
+
     }
     else {
         sg->sg_restart_ticks = secs_after_midnight - sg->sg_restart_time;
@@ -174,7 +176,7 @@ void fh_mgmt_sg_restart_time(fh_mgmt_sg_t *sg, uint32_t restart_time)
  *
  * Creates a new service group
  */
-fh_mgmt_sg_t *fh_mgmt_sg_new(const char *name, const char *report_name, 
+fh_mgmt_sg_t *fh_mgmt_sg_new(const char *name, const char *report_name,
                              uint32_t restart_time, uint32_t stats_period, int disable)
 {
     fh_mgmt_sg_t *sg = NULL;
@@ -229,15 +231,15 @@ fh_mgmt_sg_t *fh_mgmt_sg_new(const char *name, const char *report_name,
     if (stats_period > 0) {
         fh_mgmt_sg_stats_period(sg, stats_period);
     }
-    
+
     /* set the service group's respawn period based on global spawn delay parameter */
     sg->sg_respawn_period = sg_spawn_delay;
-    
+
     /*
      * Mark all service groups stopped by default
      */
     sg->sg_flags |= FH_MGMT_SG_STOPPED;
-    
+
     TAILQ_INSERT_TAIL(&sg_list, sg, sg_le);
 
     /* return the newly created service group */
@@ -563,7 +565,7 @@ static void serv_monitor(fh_mgmt_serv_t *serv, uint32_t pid, int32_t fp_cpu, uin
     fh_mon_mem_t  mem;
     fh_mon_cpu_t  cpu_table[FH_MAX_CPUS];
     fh_mon_cpu_t *cpu;
-   
+
     *pmem   = 0;
     *putime = 0;
     *pstime = 0;
@@ -758,7 +760,7 @@ static FH_STATUS serv_request(fh_mgmt_serv_t *serv, fh_adm_serv_req_t  *serv_req
     case FH_MGMT_CL_CTRL_START:
         rc = fh_mgmt_serv_start(serv);
         break;
- 
+
     case FH_MGMT_CL_CTRL_STOP:
         rc = fh_mgmt_serv_admin_stop(serv);
         break;
@@ -909,7 +911,7 @@ FH_STATUS fh_mgmt_serv_process(fh_mgmt_serv_t *serv)
      */
     switch (cmd->cmd_type) {
     default:
-        FH_LOG(MGMT, ERR, ("Invalid service command: %d (serv:%s)", 
+        FH_LOG(MGMT, ERR, ("Invalid service command: %d (serv:%s)",
                            cmd->cmd_type, serv->serv_name));
         return FH_ERROR;
     }
@@ -971,9 +973,9 @@ static void serv_child_handler(int signal)
  */
 FH_STATUS fh_mgmt_serv_start(fh_mgmt_serv_t *serv)
 {
-    int status; 
+    int status;
     char full_command[1024];
-    
+
     if (serv->serv_flags & FH_MGMT_SERV_DISABLED) {
         FH_LOG(MGMT, WARN, ("Service '%s' is DISABLED", serv->serv_name));
         return FH_OK;
@@ -987,7 +989,7 @@ FH_STATUS fh_mgmt_serv_start(fh_mgmt_serv_t *serv)
     signal(SIGCHLD, serv_child_handler);
 
     sprintf(full_command, "%s %s", serv->serv_command, serv->serv_args ? : "");
-    
+
     status = system(full_command);
 
     if (status != 0) {
@@ -1045,10 +1047,10 @@ FH_STATUS fh_mgmt_serv_stop(fh_mgmt_serv_t *serv)
     }
 
     serv->serv_flags |= FH_MGMT_SERV_STOPPING;
-    
+
     /* force the group that this service belongs to to reload its stats report */
     serv->serv_group->sg_stats_ticks = serv->serv_group->sg_stats_period;
-    
+
     return FH_OK;
 }
 
@@ -1076,10 +1078,10 @@ FH_STATUS fh_mgmt_serv_admin_stop(fh_mgmt_serv_t *serv)
     }
 
     serv->serv_flags |= FH_MGMT_SERV_ADMIN_STOPPING;
-    
+
     /* force the group that this service belongs to to reload its stats report */
     serv->serv_group->sg_stats_ticks = serv->serv_group->sg_stats_period;
-    
+
     return FH_OK;
 }
 
@@ -1562,7 +1564,7 @@ static void sg_stats_report(fh_mgmt_sg_t *sg)
 static void sg_serv_monitor(fh_mgmt_sg_t *sg)
 {
     fh_mgmt_serv_t *serv = NULL;
-    
+
     /* if it is time to attempt a respawn */
     if (sg->sg_respawn_ticks >= sg->sg_respawn_period) {
         /* walk through all the services from the service group */

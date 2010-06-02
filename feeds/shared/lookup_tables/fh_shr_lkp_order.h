@@ -61,7 +61,7 @@ FH_STATUS fh_shr_lkp_ord_init(fh_shr_cfg_tbl_t *config, fh_shr_lkp_tbl_t *table)
  */
 FH_STATUS fh_shr_lkp_ord_get(fh_shr_lkp_tbl_t *table, fh_shr_lkp_ord_key_t *key,
                              fh_shr_lkp_ord_t **entry);
-                             
+
 /**
  * @brief Add an order to the order table
  *

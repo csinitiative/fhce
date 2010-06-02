@@ -1,16 +1,18 @@
 /*
- * This file is part of Collaborative Software Initiative Feed Handlers (CSI FH).
+ * Copyright (C) 2008, 2009, 2010 The Collaborative Software Foundation.
  *
- * CSI FH is free software: you can redistribute it and/or modify it under the terms of the
+ * This file is part of FeedHandlers (FH).
+ *
+ * FH is free software: you can redistribute it and/or modify it under the terms of the
  * GNU Lesser General Public License as published by the Free Software Foundation, either version 3
  * of the License, or (at your option) any later version.
- * 
- * CSI FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ *
+ * FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with CSI FH.  If not, see <http://www.gnu.org/licenses/>.
+ * along with FH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include <stdio.h>
@@ -263,7 +265,7 @@ void fh_log_init(char* filename)
         else {
             lmode = "?????";
         }
-      
+
         FH_LOG(CSI, STATE, ("FH> Logging system started - mode: %s ", lmode));
     }
 }
@@ -374,7 +376,7 @@ void fh_log(const char *file, int line, const char *clss, const char *level, cha
 
         log_print(buffer);
     }
-        
+
     log_msg_free(msg);
 }
 
@@ -606,23 +608,23 @@ void fh_log_dump_lvls()
  * @param  (const fh_cfg_node_t *) config being processed
  * @return FH_STATUS
  */
-FH_STATUS fh_log_set_levels(const fh_cfg_node_t *config) 
+FH_STATUS fh_log_set_levels(const fh_cfg_node_t *config)
 {
     const fh_cfg_node_t *node;
     int                 i, j, rc;
     uint32_t            class = 0;
     uint32_t            level = 0;
-    
+
     // fetch the appropriate node and return ok if that node does not exist
     node = fh_cfg_get_node(config, "log.level");
     if(node == NULL) return FH_OK;
-    
+
     // loop through all of the levels that are set
     for(i = 0; i < node->num_children; i++) {
         // convert the class string to an actual class
         rc = fh_log_get_class(node->children[i]->name, &class);
         if(rc != FH_OK) return rc;
-        
+
         // loop through all values for this class setting each as we go
         for(j = 0; j < node->children[i]->num_values; j++) {
             rc = fh_log_get_lvl(node->children[i]->values[j], &level);
@@ -631,7 +633,7 @@ FH_STATUS fh_log_set_levels(const fh_cfg_node_t *config)
             fh_log_lvl[class] |= level;
         }
     }
-    
+
     return FH_OK;
 }
 
@@ -641,27 +643,27 @@ FH_STATUS fh_log_set_levels(const fh_cfg_node_t *config)
  * @param  (const fh_cfg_node_t *) config being processed
  * @return FH_STATUS
  */
-FH_STATUS fh_log_set_defaults(const fh_cfg_node_t *config) 
+FH_STATUS fh_log_set_defaults(const fh_cfg_node_t *config)
 {
     const fh_cfg_node_t *node;
     int                 i, rc;
     uint32_t            level = 0;
-    
+
     // fetch the appropriate node and return ok if that node does not exist
     node = fh_cfg_get_node(config, "log.default");
     if(node == NULL) return FH_OK;
-    
+
     // loop through all default values adding them to the default level as we go
     for(i = 0; i < node->num_values; i++) {
         rc = fh_log_get_lvl(node->values[i], &level);
         if(rc != FH_OK) return rc;
     }
-    
+
     // assign the new level to all classes
     for(i = 0; i < FH_LC_MAX; i++) {
         fh_log_lvl[i] |= level;
     }
-    
+
     return FH_OK;
 }
 
@@ -671,21 +673,21 @@ FH_STATUS fh_log_set_defaults(const fh_cfg_node_t *config)
  * @param  (const fh_cfg_node_t *) config being processed
  * @return FH_STATUS
  */
-FH_STATUS fh_log_set_config(const fh_cfg_node_t *config) 
+FH_STATUS fh_log_set_config(const fh_cfg_node_t *config)
 {
     const fh_cfg_node_t *node;
     int                 i, rc;
-    
+
     // fetch the appropriate node and return ok if that node does not exist
     node = fh_cfg_get_node(config, "log.config");
     if(node == NULL) return FH_OK;
-    
+
     // loop through all config options setting them as we go
     for(i = 0; i < node->num_values; i++) {
         rc = fh_log_get_cfg(node->values[i], &fh_log_cfg);
         if(rc != FH_OK) return rc;
     }
-        
+
     return FH_OK;
 }
 
@@ -702,11 +704,11 @@ FH_STATUS fh_log_cfg_load(const fh_cfg_node_t *config)
     // set logging configuration options
     rc = fh_log_set_config(config);
     if(rc != FH_OK) return rc;
-    
+
     // set logging level defaults
     rc = fh_log_set_defaults(config);
     if(rc != FH_OK) return rc;
-    
+
     // set logging levels from config
     rc = fh_log_set_levels(config);
     if(rc != FH_OK) return rc;

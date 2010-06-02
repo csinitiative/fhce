@@ -1,16 +1,18 @@
 /*
- * This file is part of Collaborative Software Initiative Feed Handlers (CSI FH).
+ * Copyright (C) 2008, 2009, 2010 The Collaborative Software Foundation.
  *
- * CSI FH is free software: you can redistribute it and/or modify it under the terms of the
+ * This file is part of FeedHandlers (FH).
+ *
+ * FH is free software: you can redistribute it and/or modify it under the terms of the
  * GNU Lesser General Public License as published by the Free Software Foundation, either version 3
  * of the License, or (at your option) any later version.
- * 
- * CSI FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ *
+ * FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with CSI FH.  If not, see <http://www.gnu.org/licenses/>.
+ * along with FH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include <stdio.h>
@@ -291,7 +293,7 @@ void fh_cli_init(char *name)
     fh_cli_hist_load(name);
     fh_cli_alias_load(name);
 
-    /* --- Take care of terminal settings ------------------------------- */ 
+    /* --- Take care of terminal settings ------------------------------- */
 
     fh_cli_term_config();
 }
@@ -386,7 +388,7 @@ void fh_cli_prompt()
 
     int tmp_len = sprintf(tmp_prompt, "%s%s%c ",
                           prompt ? prompt : "",
-                          mode   ? mode   : "", 
+                          mode   ? mode   : "",
                           prompt_char);
 
     if (prev_prompt_len > tmp_len) {
@@ -772,7 +774,7 @@ void fh_cli_register(fh_cli_cmd_t *parent, void **defs)
         case FH_CLI_CMD_DEF_REG:
         {
             fh_cli_cmd_t *c;
-            
+
             c = fh_cli_cmd_register(parent, c_name, c_mode, c_cb, c_help);
 
             if (c_children) {
@@ -831,7 +833,7 @@ void fh_cli_loop()
     while (1) {
         int c;
 
-        /* --- Prompt display ---------------------------------------------- */ 
+        /* --- Prompt display ---------------------------------------------- */
 
         if (new_line == 1) {
             if (rev_search) {
@@ -844,14 +846,14 @@ void fh_cli_loop()
             new_line = 0;
         }
 
-        /* --- Get new character ------------------------------------------- */ 
+        /* --- Get new character ------------------------------------------- */
 
         c = fgetc(stdin);
         if (c == EOF) {
             continue;
         }
 
-        /* --- Backspace handling ------------------------------------------ */ 
+        /* --- Backspace handling ------------------------------------------ */
 
         if ((c == '') || (c == 0x08) || (c == 0x7F) || (c == '\177')) {
             if (esc) {
@@ -885,14 +887,14 @@ void fh_cli_loop()
             continue;
         }
 
-        /* --- Jump to end of the line ------------------------------------- */ 
+        /* --- Jump to end of the line ------------------------------------- */
 
         if (c == '\5') {
             fh_cli_rmove(cmd, cmd_len, &pos, cmd_len);
             continue;
         }
 
-        /* --- End session ------------------------------------------------- */ 
+        /* --- End session ------------------------------------------------- */
 
         if (c == '\4') {
             fh_cli_write("\n");
@@ -901,14 +903,14 @@ void fh_cli_loop()
             continue;
         }
 
-        /* --- Kill line handling ------------------------------------------ */ 
+        /* --- Kill line handling ------------------------------------------ */
 
         if (c == '\v') {
             fh_cli_kill(cmd, &cmd_len, &pos);
             continue;
         }
 
-        /* --- Paste Yank'ed data ------------------------------------------ */ 
+        /* --- Paste Yank'ed data ------------------------------------------ */
 
         if (c == '\31') {
             fh_cli_paste(cmd, &cmd_len, &pos);
@@ -959,7 +961,7 @@ void fh_cli_loop()
             continue;
         }
 
-        /* --- Clear Screen handling --------------------------------------- */ 
+        /* --- Clear Screen handling --------------------------------------- */
 
         if (c == '\f') {
             fh_cli_write("\n");
@@ -994,7 +996,7 @@ void fh_cli_loop()
             continue;
         }
 
-        /* --- Control handling (Up/Down/Left/Right) ---------------------- */ 
+        /* --- Control handling (Up/Down/Left/Right) ---------------------- */
 
         if (c == '\33') {
             if (rev_search) {

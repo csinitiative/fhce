@@ -1,16 +1,18 @@
 /*
- * This file is part of Collaborative Software Initiative Feed Handlers (CSI FH).
+ * Copyright (C) 2008, 2009, 2010 The Collaborative Software Foundation.
  *
- * CSI FH is free software: you can redistribute it and/or modify it under the terms of the
+ * This file is part of FeedHandlers (FH).
+ *
+ * FH is free software: you can redistribute it and/or modify it under the terms of the
  * GNU Lesser General Public License as published by the Free Software Foundation, either version 3
  * of the License, or (at your option) any later version.
- * 
- * CSI FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ *
+ * FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with CSI FH.  If not, see <http://www.gnu.org/licenses/>.
+ * along with FH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 // System headers
@@ -43,7 +45,7 @@ void test_cpu_count_value_is_reasonable()
 void test_cpu_print_produces_correct_output()
 {
     char buffer[1024];
-    
+
     memset(&buffer, 0, 1024);
 
     fh_cpu_print(0x1, buffer, 1024);
@@ -78,7 +80,7 @@ void test_cpu_getaffiniity_behaves_correctly()
     for (i = 0; i < num_cpus; i++) {
         correct_mask |= (1 << i);
     }
-    
+
     FH_TEST_ASSERT_TRUE(fh_cpu_getaffinity(&returned_mask) == FH_OK);
     FH_TEST_ASSERT_LEQUAL((long int)returned_mask, (long int)correct_mask);
 }
@@ -87,10 +89,10 @@ void test_cpu_getaffiniity_behaves_correctly()
 void test_cpu_getaffinity_behaves_correctly_after_setaffinity()
 {
     uint32_t returned_mask;
-        
+
     // set affinity to the first CPU
     FH_TEST_ASSERT_TRUE(fh_cpu_setaffinity(0x1) == FH_OK);
-    
+
     // check to make sure that get_affinity is behaving as expected
     FH_TEST_ASSERT_TRUE(fh_cpu_getaffinity(&returned_mask) == FH_OK);
     FH_TEST_ASSERT_LEQUAL((long int)returned_mask, (long int)0x1);

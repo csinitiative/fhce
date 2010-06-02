@@ -1,16 +1,18 @@
 /*
- * This file is part of Collaborative Software Initiative Feed Handlers (CSI FH).
+ * Copyright (C) 2008, 2009, 2010 The Collaborative Software Foundation.
  *
- * CSI FH is free software: you can redistribute it and/or modify it under the terms of the
+ * This file is part of FeedHandlers (FH).
+ *
+ * FH is free software: you can redistribute it and/or modify it under the terms of the
  * GNU Lesser General Public License as published by the Free Software Foundation, either version 3
  * of the License, or (at your option) any later version.
- * 
- * CSI FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ *
+ * FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with CSI FH.  If not, see <http://www.gnu.org/licenses/>.
+ * along with FH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __FH_PLUGIN_H__
@@ -25,8 +27,8 @@
 
 /* general hook functions */
 #define FH_PLUGIN_LOG_MSG                       (0)
-                                                
-/* OPRA hook functions */                       
+
+/* OPRA hook functions */
 #define FH_PLUGIN_MSG_SEND                      (1)
 #define FH_PLUGIN_MSG_FLUSH                     (2)
 #define FH_PLUGIN_OPRA_MIN                      (3)
@@ -43,17 +45,17 @@
 #define FH_PLUGIN_OPRA_QUOTE_BBO_PACK           (13)
 #define FH_PLUGIN_OPRA_OPT_ADD                  (14)
 #define FH_PLUGIN_OPRA_CFG_LOAD                 (15)
-                                                
-/* management layer hook functions */           
+
+/* management layer hook functions */
 #define FH_PLUGIN_MGMT_INIT                     (16)
 #define FH_PLUGIN_FHMGR_CFG_LOAD                (17)
 #define FH_PLUGIN_FHMGR_STATS_REPORT            (18)
-                                                
-/* OPRA alert related hook functions */         
+
+/* OPRA alert related hook functions */
 #define FH_PLUGIN_OPRA_FTLINE_EVENT             (19)
 #define FH_PLUGIN_MGMT_INIT_COMPLETE            (20)
-                                                
-/* Arca hook functions */                       
+
+/* Arca hook functions */
 #define FH_PLUGIN_ARCA_MIN                      (21)
 #define FH_PLUGIN_ARCA_MSG_INIT                 (21)
 #define FH_PLUGIN_ARCA_INIT                     (22)
@@ -96,8 +98,8 @@
 #define FH_PLUGIN_GET_SIDE                      (56)
 #define FH_PLUGIN_ADD_SYMBOL_BY_INDEX           (57)
 #define FH_PLUGIN_LOOKUP_SYMBOL_BY_INDEX        (58)
-                                                
-/* ITCH hook functions */                       
+
+/* ITCH hook functions */
 #define FH_PLUGIN_ITCH_MSG_SYSTEM               (59)
 #define FH_PLUGIN_ITCH_MSG_STOCK_DIR            (60)
 #define FH_PLUGIN_ITCH_MSG_STOCK_TRADE_ACT      (61)
@@ -119,8 +121,8 @@
 #define FH_PLUGIN_LH_INIT                       (75)
 #define FH_PLUGIN_PERIODIC_STATS                (76)
 #define FH_PLUGIN_ALERT                         (77)
-                                                
-/* arca trade plugins */                        
+
+/* arca trade plugins */
 #define FH_PLUGIN_ARCA_TRADE                    (78)
 #define FH_PLUGIN_ARCA_TRADE_CANCEL             (79)
 #define FH_PLUGIN_ARCA_TRADE_CORRECTION         (80)
@@ -134,7 +136,7 @@
 #define FH_PLUGIN_DIR_EDGE_MSG_ORDER_CANCELED   (86)
 #define FH_PLUGIN_DIR_EDGE_MSG_TRADE            (87)
 #define FH_PLUGIN_DIR_EDGE_MSG_BROKEN_TRADE     (88)
-#define FH_PLUGIN_DIR_EDGE_MSG_SECURITY_STATUS  (89) 
+#define FH_PLUGIN_DIR_EDGE_MSG_SECURITY_STATUS  (89)
 
 /* BATS plugins       */
 #define FH_PLUGIN_BATS_MSG_ADD_ORDER_LONG       (90)
@@ -161,7 +163,7 @@
 typedef void (*fh_plugin_hook_t)(FH_STATUS *, ...);
 
 
-/** 
+/**
  *  @brief Register a function for a plugin hook
  *
  *  @param hook the hook being registered
@@ -170,7 +172,7 @@ typedef void (*fh_plugin_hook_t)(FH_STATUS *, ...);
  */
 FH_STATUS fh_plugin_register(int, fh_plugin_hook_t);
 
-/** 
+/**
  *  @brief Load any plugins that are in the specified directory
  *
  *  @param plugin_dir_name name of the plugin directory being loaded

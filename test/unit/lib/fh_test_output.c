@@ -1,16 +1,18 @@
 /*
- * This file is part of Collaborative Software Initiative Feed Handlers (CSI FH).
+ * Copyright (C) 2008, 2009, 2010 The Collaborative Software Foundation.
  *
- * CSI FH is free software: you can redistribute it and/or modify it under the terms of the
+ * This file is part of FeedHandlers (FH).
+ *
+ * FH is free software: you can redistribute it and/or modify it under the terms of the
  * GNU Lesser General Public License as published by the Free Software Foundation, either version 3
  * of the License, or (at your option) any later version.
- * 
- * CSI FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ *
+ * FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with CSI FH.  If not, see <http://www.gnu.org/licenses/>.
+ * along with FH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 // System headers
@@ -31,7 +33,7 @@
 void fh_test_out_start(const char *binary, int compact)
 {
     const char *process_name;
-    
+
     // strip path information from the currently running binary
     process_name = fh_test_util_strip_path(binary);
 
@@ -41,7 +43,7 @@ void fh_test_out_start(const char *binary, int compact)
     }
     // otherwise, print an expanded "starting tests" message
     else {
-        printf("Running tests from %s ...\n\n", process_name);    
+        printf("Running tests from %s ...\n\n", process_name);
     }
 }
 
@@ -61,7 +63,7 @@ void fh_test_out_test(fh_test_msg_type_t type, const char *message, fh_test_sym_
         printf("%s:%ld:", test->source_file, test->first_line);
         printf("%s", fh_test_msg_uctypestr(type));
         printf("\n%s\n.\n", (message) ? message : "");
-        
+
         return;
     }
 
@@ -82,7 +84,7 @@ void fh_test_out_test(fh_test_msg_type_t type, const char *message, fh_test_sym_
     default:
         printf("E");
     }
-    
+
     // if we get here, we are expecting a message to be added/printed
     fh_test_msg_add(type, message, test);
 }
@@ -103,7 +105,7 @@ void fh_test_out_finish(int compact)
         // print a little message that we are done and any messages we have accumulated on the way
         printf(" done!");
         fh_test_msg_print();
-    
+
         // change the console to the correct color
         if (fh_test_stats->errors > 0) {
             printf("\x1b%s", CONSOLE_COLOR_RED);
@@ -114,7 +116,7 @@ void fh_test_out_finish(int compact)
         else {
             printf("\x1b%s", CONSOLE_COLOR_GREEN);
         }
-    
+
         // print a summary message
         printf("\n\n===========================================================================");
         printf("\n%d tests",      fh_test_stats->tests);
@@ -122,7 +124,7 @@ void fh_test_out_finish(int compact)
         printf(", %d failures",   fh_test_stats->failures);
         printf(", %d errors",     fh_test_stats->errors);
         printf("\n\n");
-    
+
         // reset the console color
         printf("\x1b%s", CONSOLE_RESET);
     }

@@ -1,16 +1,18 @@
 /*
- * This file is part of Collaborative Software Initiative Feed Handlers (CSI FH).
+ * Copyright (C) 2008, 2009, 2010 The Collaborative Software Foundation.
  *
- * CSI FH is free software: you can redistribute it and/or modify it under the terms of the
+ * This file is part of FeedHandlers (FH).
+ *
+ * FH is free software: you can redistribute it and/or modify it under the terms of the
  * GNU Lesser General Public License as published by the Free Software Foundation, either version 3
  * of the License, or (at your option) any later version.
- * 
- * CSI FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ *
+ * FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with CSI FH.  If not, see <http://www.gnu.org/licenses/>.
+ * along with FH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include <stdio.h>
@@ -164,7 +166,7 @@ void fh_hist_copy(fh_hist_t *hg_from, fh_hist_t *hg_to)
 {
     FH_ASSERT(hg_from && hg_to);
     FH_ASSERT(hg_from->hg_bincnt == hg_to->hg_bincnt);
-  
+
     hg_to->hg_total = hg_from->hg_total;
     hg_to->hg_sum   = hg_from->hg_sum;
     hg_to->hg_min   = hg_from->hg_min;
@@ -222,7 +224,7 @@ void fh_hist_print(fh_hist_t *hg)
             (int) 100 * total / hg->hg_total));
     }
 
- 
+
     hg->hg_avg = (float) hg->hg_sum / hg->hg_total;
 
     HG_PRINT((" > Total:             %8lld", LLI(total)));

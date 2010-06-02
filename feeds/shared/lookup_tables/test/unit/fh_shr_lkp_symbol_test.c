@@ -4,7 +4,7 @@
  * CSI FH is free software: you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation, either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * CSI FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
@@ -28,17 +28,17 @@ fh_shr_cfg_tbl_t *valid_config()
 {
     static fh_shr_cfg_tbl_t config = {
         .name       = "dummy_config",
-        .enabled    = 1,        
+        .enabled    = 1,
         .size       = 100
     };
-    
+
     return &config;
 }
 
 fh_shr_lkp_tbl_t *valid_table()
 {
     static fh_shr_lkp_tbl_t table;
-    
+
     fh_shr_lkp_sym_init(valid_config(), &table);
     return &table;
 }
@@ -48,7 +48,7 @@ fh_shr_lkp_sym_key_t *valid_key()
     static fh_shr_lkp_sym_key_t key = {
         .symbol = "AAAAA"
     };
-    
+
     return &key;
 }
 
@@ -90,15 +90,15 @@ void test_retrieving_entry_with_freed_key_works()
     fh_shr_lkp_sym_key_t    *key;
     fh_shr_lkp_sym_t        *entry;
     fh_shr_lkp_tbl_t        *table = valid_table();
-    
+
     key = (fh_shr_lkp_sym_key_t *)malloc(sizeof(fh_shr_lkp_sym_key_t));
     memset(key, 0, sizeof(fh_shr_lkp_sym_key_t));
     strcpy(key->symbol, "AAAAA");
-    
+
     FH_TEST_ASSERT_EQUAL((int)fh_shr_lkp_sym_get(table, key, &entry), (int)FH_OK);
     free(key);
     FH_TEST_ASSERT_EQUAL((int)fh_shr_lkp_sym_get(table, valid_key(), &entry), (int)FH_OK);
-    
+
     FH_TEST_ASSERT_EQUAL(table->count, 1);
 }
 

@@ -1,15 +1,17 @@
-#  This file is part of Collaborative Software Initiative Feed Handlers (CSI FH).
-# 
-#  CSI FH is free software: you can redistribute it and/or modify it under the terms of the
+#  Copyright (C) 2008, 2009, 2010 The Collaborative Software Foundation.
+#
+#  This file is part of FeedHandlers (FH).
+#
+#  FH is free software: you can redistribute it and/or modify it under the terms of the
 #  GNU Lesser General Public License as published by the Free Software Foundation, either version 3
 #  of the License, or (at your option) any later version.
-#  
-#  CSI FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+#
+#  FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
 #  even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #  GNU Lesser General Public License for more details.
-# 
+#
 #  You should have received a copy of the GNU Lesser General Public License
-#  along with CSI FH.  If not, see <http://www.gnu.org/licenses/>.
+#  along with FH.  If not, see <http://www.gnu.org/licenses/>.
 
 # required gems/modules
 require 'open4'
@@ -28,14 +30,14 @@ def string_in_stream?(string, stream)
         throw Exception.new("the instance variable @errors must be set") unless @errors
         output = @errors
     end
-    
+
     # check each line of the output for the specified string and return if the string is found
     output.each do |line|
         if line =~ /#{string}/
             return true
         end
     end
-    
+
     false
 end
 
@@ -61,7 +63,7 @@ When /^the command "(.+)" is run with captured output$/ do |command|
             @errors << error.chomp
         end
     end
-    
+
     @exitcode = @status.exitstatus
 end
 
@@ -96,7 +98,7 @@ When /^(\w+) is set to "(.+)"$/ do |variable, value|
     when "[DIST]"
         value = DIST_DIR
     end
-    
+
     ENV[variable] = value
 end
 

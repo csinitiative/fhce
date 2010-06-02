@@ -4,7 +4,7 @@
  * CSI FH is free software: you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation, either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * CSI FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
@@ -16,7 +16,7 @@
 #ifndef FH_SHR_TCP_LH_H
 #define FH_SHR_TCP_LH_H
 
-/** 
+/**
  *  @defgroup SharedTCPLineHandler
  *  @{
  */
@@ -36,7 +36,7 @@
 
 
 #define SYSTEM_EVENT_MSG_SIZE                 12
-#define ADD_ORDER_ATTIRBUTED_QUOTE_MSG_SIZE   51   // Includes the MMID field 
+#define ADD_ORDER_ATTIRBUTED_QUOTE_MSG_SIZE   51   // Includes the MMID field
 #define ADD_ORDER_MSG_SIZE                    47   // without the MMID field
 #define ORDER_EXECUTED_MSG_SIZE               50
 #define ORDER_CANCELED_MSG_SIZE               29
@@ -103,7 +103,7 @@ typedef struct {
     fh_shr_lh_alarm_cb_t    *alarm;
 } fh_shr_tcp_cb_t;
 
-/** 
+/**
  *  @brief Start the line handler thread (the thread that does all the work)
  *
  *  @param info feed handler information (version, build info, etc.)
@@ -152,7 +152,7 @@ void fh_shr_tcp_lh_latency();
 void fh_shr_tcp_lh_exit();
 
 /**
- *  @brief Call to get line handler thread id  
+ *  @brief Call to get line handler thread id
  */
 
 uint32_t fh_shr_tcp_lh_get_tid();

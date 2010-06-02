@@ -4,7 +4,7 @@
  * CSI FH is free software: you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation, either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * CSI FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
@@ -16,7 +16,7 @@
 #ifndef __FH_SHR_LH_H__
 #define __FH_SHR_LH_H__
 
-/** 
+/**
  *  @defgroup SharedLineHandler
  *  @{
  */
@@ -90,7 +90,7 @@ typedef struct {
     fh_shr_lh_parse_cb_t *parse;
 } fh_shr_lh_cb_t;
 
-/** 
+/**
  *  @brief Start the line handler thread (the thread that does all the work)
  *
  *  @param info feed handler information (version, build info, etc.)

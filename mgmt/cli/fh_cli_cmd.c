@@ -1,16 +1,18 @@
 /*
- * This file is part of Collaborative Software Initiative Feed Handlers (CSI FH).
+ * Copyright (C) 2008, 2009, 2010 The Collaborative Software Foundation.
  *
- * CSI FH is free software: you can redistribute it and/or modify it under the terms of the
+ * This file is part of FeedHandlers (FH).
+ *
+ * FH is free software: you can redistribute it and/or modify it under the terms of the
  * GNU Lesser General Public License as published by the Free Software Foundation, either version 3
  * of the License, or (at your option) any later version.
- * 
- * CSI FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ *
+ * FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with CSI FH.  If not, see <http://www.gnu.org/licenses/>.
+ * along with FH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include <stdio.h>
@@ -45,7 +47,7 @@ static int             cmd_mode = FH_CLI_CMD_MODE_DEFAULT;
 /*
  * cmd_build
  *
- * Set the unique length of a given command compared to the other 
+ * Set the unique length of a given command compared to the other
  * sibling commands. This allows to put abreviations on the command line.
  */
 static int cmd_build(fh_cli_cmd_lh_t *cmd_lh)
@@ -398,7 +400,7 @@ int fh_cli_cmd_find(fh_cli_cmd_lh_t *cmd_list, int num_args, char *args[],
         if (strncasecmp(c->c_name, arg_p, c->c_uniq_len)) {
             continue;
         }
-    
+
         if (strncasecmp(c->c_name, arg_p, arg_len)) {
             continue;
         }

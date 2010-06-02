@@ -4,7 +4,7 @@
  * CSI FH is free software: you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation, either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * CSI FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
@@ -41,24 +41,24 @@ const char *fh_shr_cfg_home()
  *  \param version the version of the feed handler that is being run
  */
 void fh_shr_cfg_set_defaults(fh_shr_cfg_options_t *options, const char *name, int version)
-{    
+{
     char *fh_home;
     char  real_config_dir[PATH_MAX + 1];
     char  real_plugin_dir[PATH_MAX + 1];
     char  real_config_file[NAME_MAX + 1];
-    
+
     // by default all options are 0 or NULL
     memset(options, 0, sizeof(fh_shr_cfg_options_t));
-    
+
     // set the version to whatever we were passed
     options->version = version;
-    
+
     // override default FH_HOME if the FH_HOME env. variable is set
     fh_home = getenv("FH_HOME");
     if (fh_home == NULL) {
         fh_home = FH_HOME;
     }
-    
+
     // generate "real" config/plugin path information using the name of this feed handler
     sprintf(real_config_dir, FH_SHR_CFG_DIR, name);
     sprintf(real_config_file, FH_SHR_CFG_FILE, name);
@@ -66,7 +66,7 @@ void fh_shr_cfg_set_defaults(fh_shr_cfg_options_t *options, const char *name, in
     fh_str_downcase(real_config_dir);
     fh_str_downcase(real_config_file);
     fh_str_downcase(real_plugin_dir);
-    
+
     // set up paths, rooted at fh_home
     sprintf(options->config_file, "%s/%s/%s", fh_home, real_config_dir, real_config_file);
     sprintf(options->plugin_path, "%s/%s", fh_home, real_plugin_dir);
@@ -81,10 +81,10 @@ void fh_shr_cfg_set_defaults(fh_shr_cfg_options_t *options, const char *name, in
 FH_STATUS fh_shr_cfg_log_init(fh_shr_cfg_options_t *options, const fh_cfg_node_t *config)
 {
     int rc = FH_OK;
-    
+
     // start up logging
     fh_log_open();
-    
+
     // conditionally set logging to output to the command line
     if (options->debug_level || options->display_version) {
         fh_log_set_cfg(FH_LCF_CONSOLE);
@@ -97,17 +97,17 @@ FH_STATUS fh_shr_cfg_log_init(fh_shr_cfg_options_t *options, const fh_cfg_node_t
     if (options->debug_level > 1) {
         fh_log_set_lvl(FH_LL_DIAG | FH_LL_VSTATE);
     }
-    
+
     // set the logging identifier to this process's name
     fh_log_set_ident(options->logging_tag);
 
-    // load extra logging configuration from process config file 
+    // load extra logging configuration from process config file
     rc = fh_log_cfg_load(config);
     if (rc != FH_OK) {
         FH_LOG(MGMT, ERR, ("failed to load logging configuration from '%s'", options->config_file));
         return rc;
     }
-    
+
     // if we get here, return success
     return rc;
 }

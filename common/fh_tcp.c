@@ -1,16 +1,18 @@
 /*
- * This file is part of Collaborative Software Initiative Feed Handlers (CSI FH).
+ * Copyright (C) 2008, 2009, 2010 The Collaborative Software Foundation.
  *
- * CSI FH is free software: you can redistribute it and/or modify it under the terms of the
+ * This file is part of FeedHandlers (FH).
+ *
+ * FH is free software: you can redistribute it and/or modify it under the terms of the
  * GNU Lesser General Public License as published by the Free Software Foundation, either version 3
  * of the License, or (at your option) any later version.
- * 
- * CSI FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ *
+ * FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with CSI FH.  If not, see <http://www.gnu.org/licenses/>.
+ * along with FH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -141,12 +143,12 @@ FH_STATUS fh_tcp_tconnect(int s, uint32_t daddr, uint16_t dport, uint32_t usec, 
             return rc;
         }
     }
-  
+
     memset(&peer, 0, sizeof(peer));
     peer.sin_addr.s_addr = daddr;
     peer.sin_port        = htons(dport);
     peer.sin_family      = AF_INET;
-  
+
     ret = connect(s, (struct sockaddr *) &peer, sizeof(peer));
 
     if (usec != 0) {
@@ -154,7 +156,7 @@ FH_STATUS fh_tcp_tconnect(int s, uint32_t daddr, uint16_t dport, uint32_t usec, 
             return FH_ERROR;
         }
     }
-  
+
     if (ret != 0) {
         struct timeval *ptv, tv;
         fd_set wrfds;
@@ -271,7 +273,7 @@ FH_STATUS fh_tcp_open(uint32_t addr, uint16_t port, int *s)
     if (fh_sock_block(sock, 0) < 0) {
         goto error;
     }
-      
+
     if (fh_sock_reuse(sock, 1) < 0) {
         goto error;
     }
@@ -312,7 +314,7 @@ FH_STATUS fh_tcp_client_ex(uint32_t saddr, uint16_t sport, uint32_t daddr,
     if (rc != FH_OK) {
         return rc;
     }
- 
+
     rc = fh_tcp_tconnect(sock, daddr, dport, FH_TCP_CLIENT_TIMEOUT, quiet);
     if (rc != FH_OK) {
         close(sock);
@@ -328,7 +330,7 @@ FH_STATUS fh_tcp_client_ex(uint32_t saddr, uint16_t sport, uint32_t daddr,
         close(sock);
         return rc;
     }
-  
+
     rc = fh_tcp_nodelay(sock, 1);
     if (rc != FH_OK) {
         close(sock);
@@ -447,7 +449,7 @@ int fh_tcp_writeblk(int s, void *buf, int nbytes)
         buf = (char *) buf + nwritten;
     }
 
-    FH_LOG(NET, INFO, ("NET> fh_tcp_writeblk: written: %d socket # %d left: %d", 
+    FH_LOG(NET, INFO, ("NET> fh_tcp_writeblk: written: %d socket # %d left: %d",
                        nbytes - nleft, s, nleft));
 
     return nbytes - nleft;
@@ -476,7 +478,7 @@ static int fh_tcp_readex(int s, void *buf, int nbytes, int flags)
         nread = recv(s, (char*)buf, nleft, flags | MSG_DONTWAIT);
 
         if (nread < 0) {
-            if ((errno == ECONNRESET) || 
+            if ((errno == ECONNRESET) ||
                 (errno == EPIPE)) {
                 FH_LOG(NET, WARN, ("NET> fh_tcp_readex: ret 0 due to error %d", errno));
                 return 0;
@@ -555,7 +557,7 @@ static int fh_tcp_writeex(int s, const void *buf, int nbytes, int flags)
     uint64_t beg_ts   = 0;
     uint64_t end_ts   = 0;
     uint32_t retry    = 0;
-   
+
     if (FH_LL_OK(NET, STATS)) {
         fh_time_get(&beg_ts);
     }
@@ -565,7 +567,7 @@ static int fh_tcp_writeex(int s, const void *buf, int nbytes, int flags)
         nwritten = send(s, (char*)buf, nleft, flags | MSG_DONTWAIT);
 
         if (nwritten < 0) {
-            if ((errno == ECONNRESET) || 
+            if ((errno == ECONNRESET) ||
                 (errno == EPIPE)) {
                 FH_LOG(NET, WARN, ("NET> fh_tcp_writeex: ret 0 due to error %d", errno));
                 return 0;
@@ -602,7 +604,7 @@ static int fh_tcp_writeex(int s, const void *buf, int nbytes, int flags)
         }
     }
 
-    FH_LOG(NET, INFO, ("NET> fh_tcp_writeex: written: %d socket # %d left: %d", 
+    FH_LOG(NET, INFO, ("NET> fh_tcp_writeex: written: %d socket # %d left: %d",
                        nbytes - nleft, s, nleft));
 
     return nbytes - nleft;

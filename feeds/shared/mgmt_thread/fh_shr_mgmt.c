@@ -4,7 +4,7 @@
  * CSI FH is free software: you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation, either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * CSI FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
@@ -119,7 +119,7 @@ static FH_STATUS fh_shr_mgmt_cmd_action(fh_adm_cmd_t *cmd, char *cmd_buf, int cm
     case FH_MGMT_CL_CTRL_CLRSTATS:
         callbacks.clrstats();
         break;
-    
+
     case FH_MGMT_CL_CTRL_STOP:
         callbacks.exit();
         break;
@@ -242,12 +242,12 @@ static FH_STATUS fh_shr_mgmt_process(char *cmd_buf, int cmd_len)
 {
     fh_adm_cmd_t *cmd = (fh_adm_cmd_t *)cmd_buf;
     FH_STATUS     rc  = FH_OK;
-    
+
     switch (cmd->cmd_type) {
     case FH_ADM_CMD_STATS_REQ:
         rc = fh_shr_mgmt_cmd_stats(cmd, cmd_buf, cmd_len);
         break;
-    
+
     case FH_ADM_CMD_STATUS_REQ:
         rc = fh_shr_mgmt_cmd_status(cmd, cmd_buf, cmd_len);
         break;
@@ -281,14 +281,14 @@ static void *fh_shr_mgmt_run(void *arg)
     int         connected = 0;
     uint32_t    dest_addr = inet_addr("127.0.0.1");
     char       *thread_name = NULL;
-    
+
     /* ensure that no data was passed to the thread (none is needed) */
     FH_ASSERT(arg == NULL);
-    
+
     /* allocate space for, generate, and log a "thread started" message for this thread's name */
     thread_name = fh_util_thread_name("Mgmt", proc_name);
     fh_log_thread_start(thread_name);
-    
+
     /* never exit (only when this thread receives SIGINT) */
     while (!finished) {
         ticks++;
@@ -322,14 +322,14 @@ static void *fh_shr_mgmt_run(void *arg)
             FH_LOG(MGMT, WARN, ("%s management connection lost", thread_name));
             connected = 0;
         }
-    
+
         /* every second, dump the rate statistics. */
         if ((ticks % FH_SHR_MGMT_HZ) == 0) {
             callbacks.snapstats();
             callbacks.snaplatency();
         }
     }
-    
+
     /* print a "thread stopped" message and return */
     fh_log_thread_stop(thread_name);
     return NULL;
@@ -337,7 +337,7 @@ static void *fh_shr_mgmt_run(void *arg)
 
 /**
  *  @brief Initialize management functionality
- * 
+ *
  *  This function spawns the management thread and establishes a connection to the fhmgr.
  *
  *  @param standalone flag to set management thread to run without a central manager
@@ -348,17 +348,17 @@ static void *fh_shr_mgmt_run(void *arg)
  */
 FH_STATUS fh_shr_mgmt_start(int standalone, const fh_info_build_t *info, const char *proc,
                             fh_shr_mgmt_cb_t *cb)
-{    
+{
     /* mark the startup time  */
     fh_time_get(&uptime);
-    
+
     /* make copies of the feed handler info, process names, and callbacks for later use */
     memcpy(&fh_info, info, sizeof(fh_info_build_t));
     memcpy(&callbacks, cb, sizeof(fh_shr_mgmt_cb_t));
     strcpy(proc_name, proc);
-    
+
     /* starting up in standalone mode */
-    if (standalone) { 
+    if (standalone) {
         conn_context.mcl_fd = -1;
     }
 
@@ -368,7 +368,7 @@ FH_STATUS fh_shr_mgmt_start(int standalone, const fh_info_build_t *info, const c
                            fh_info.name, proc_name, strerror(errno), errno));
         return FH_ERROR;
     }
-    
+
     /* if we get here, return OK */
     return FH_OK;
 }

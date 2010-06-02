@@ -1,16 +1,18 @@
 /*
- * This file is part of Collaborative Software Initiative Feed Handlers (CSI FH).
+ * Copyright (C) 2008, 2009, 2010 The Collaborative Software Foundation.
  *
- * CSI FH is free software: you can redistribute it and/or modify it under the terms of the
+ * This file is part of FeedHandlers (FH).
+ *
+ * FH is free software: you can redistribute it and/or modify it under the terms of the
  * GNU Lesser General Public License as published by the Free Software Foundation, either version 3
  * of the License, or (at your option) any later version.
- * 
- * CSI FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ *
+ * FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with CSI FH.  If not, see <http://www.gnu.org/licenses/>.
+ * along with FH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 // System headers
@@ -58,10 +60,10 @@ void fh_test_cmd_parse(int argc, char **argv, fh_test_cmd_opts_t *options)
     int            op;
     extern char   *optarg;
     const char    *process_name;
-        
+
     // set defaults
     fh_test_cmd_defaults(options);
-    
+
     // set the process name
     process_name = fh_test_util_strip_path(argv[0]);
 
@@ -72,7 +74,7 @@ void fh_test_cmd_parse(int argc, char **argv, fh_test_cmd_opts_t *options)
         case 'h':
             fh_test_cmd_helpmsg(process_name);
             break;
-            
+
         case 'c':
             options->compact = 1;
             break;

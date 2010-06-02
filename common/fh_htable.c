@@ -1,16 +1,18 @@
 /*
- * This file is part of Collaborative Software Initiative Feed Handlers (CSI FH).
+ * Copyright (C) 2008, 2009, 2010 The Collaborative Software Foundation.
  *
- * CSI FH is free software: you can redistribute it and/or modify it under the terms of the
+ * This file is part of FeedHandlers (FH).
+ *
+ * FH is free software: you can redistribute it and/or modify it under the terms of the
  * GNU Lesser General Public License as published by the Free Software Foundation, either version 3
  * of the License, or (at your option) any later version.
- * 
- * CSI FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ *
+ * FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with CSI FH.  If not, see <http://www.gnu.org/licenses/>.
+ * along with FH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include <stdlib.h>
@@ -43,7 +45,7 @@ static int ht_npower(int n)
             return size;
         }
     }
- 
+
     return 0;
 }
 
@@ -209,7 +211,7 @@ FH_STATUS fh_ht_put(fh_ht_t *ht, void *key, int klen, void *value)
     kops = &ht->ht_kops;
 
     /*
-     * Compute the hash key outside the critical section 
+     * Compute the hash key outside the critical section
      */
     hashval = kops->kops_khash(key, klen);
     index   = ht_index(ht, hashval);
@@ -284,7 +286,7 @@ FH_STATUS fh_ht_put(fh_ht_t *ht, void *key, int klen, void *value)
      * of the collision list
      */
     TAILQ_INSERT_HEAD(he_head, he, he_next);
-      
+
     he->he_chead = he_head;
     he->he_value = value;
 
@@ -375,7 +377,7 @@ FH_STATUS fh_ht_delete(fh_ht_t *ht, void *key, int klen, void **val)
     }
 
     TAILQ_REMOVE(he->he_chead, he, he_next);
- 
+
     *val = he->he_value;
 
     fh_mpool_put(ht->ht_mpool, he);
@@ -397,7 +399,7 @@ FH_STATUS fh_ht_delete(fh_ht_t *ht, void *key, int klen, void **val)
 uint32_t fh_ht_memuse(fh_ht_t *ht)
 {
     uint32_t mem = 0;
-    
+
     mem += sizeof(fh_ht_t);
     mem += ht->ht_size * sizeof(he_head_t);
     mem += fh_mpool_memuse(ht->ht_mpool);

@@ -1,16 +1,18 @@
 /*
- * This file is part of Collaborative Software Initiative Feed Handlers (CSI FH).
+ * Copyright (C) 2008, 2009, 2010 The Collaborative Software Foundation.
  *
- * CSI FH is free software: you can redistribute it and/or modify it under the terms of the
+ * This file is part of FeedHandlers (FH).
+ *
+ * FH is free software: you can redistribute it and/or modify it under the terms of the
  * GNU Lesser General Public License as published by the Free Software Foundation, either version 3
  * of the License, or (at your option) any later version.
- * 
- * CSI FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ *
+ * FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with CSI FH.  If not, see <http://www.gnu.org/licenses/>.
+ * along with FH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include <stdio.h>
@@ -50,7 +52,7 @@ static int fh_mgmt_cfg_yesno(const char *strval)
 
     return -1;
 }
- 
+
 /*
  * cfg_sg_load
  *
@@ -179,7 +181,7 @@ static fh_mgmt_serv_t *cfg_serv_load(const fh_cfg_node_t *serv_node)
     if (stats == -1) {
         stats = 0;
     }
-    
+
     // Check killing process on fhmgr exit is enabled
     strval      = fh_cfg_get_string(serv_node, "shutdown");
     shutdown = fh_mgmt_cfg_yesno(strval);
@@ -216,7 +218,7 @@ static fh_mgmt_serv_t *cfg_serv_load(const fh_cfg_node_t *serv_node)
     }
 
     return serv;
-} 
+}
 
 /*
  * fh_mgmt_cfg_load
@@ -231,7 +233,7 @@ FH_STATUS fh_mgmt_cfg_load(fh_cfg_node_t *config)
     char                *endptr         = NULL;
     uint32_t             spawn_delay    = 0;
     FH_STATUS            rc             = FH_ERROR;
-    
+
     /* fetch (or default) the spawn delay value from the config structure */
     strval = fh_cfg_get_string(config, "fhmgr.spawn_delay");
     if (!strval) {
@@ -250,7 +252,7 @@ FH_STATUS fh_mgmt_cfg_load(fh_cfg_node_t *config)
 
     /* initialization of the service library */
     fh_mgmt_serv_init(spawn_delay);
-    
+
     // Look for the service_groups configuration
     node = fh_cfg_get_node(config, "fhmgr.service_groups");
     if (!node) {
@@ -266,7 +268,7 @@ FH_STATUS fh_mgmt_cfg_load(fh_cfg_node_t *config)
         // Load each service group
         sg = cfg_sg_load(group);
         if (!sg) {
-            FH_LOG(MGMT, ERR, ("Failed to parse service group: %s", group->name)); 
+            FH_LOG(MGMT, ERR, ("Failed to parse service group: %s", group->name));
             return rc;
         }
 
@@ -276,7 +278,7 @@ FH_STATUS fh_mgmt_cfg_load(fh_cfg_node_t *config)
             continue;
         }
 
-        // Load and add all its services 
+        // Load and add all its services
         for (j=0; j < services->num_children; j++) {
             const fh_cfg_node_t *serv_node = services->children[j];
             fh_mgmt_serv_t *serv = NULL;

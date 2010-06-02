@@ -4,7 +4,7 @@
  * CSI FH is free software: you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation, either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * CSI FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
@@ -43,7 +43,7 @@ typedef struct {
 
 /**
  *  @brief Initialize management functionality
- * 
+ *
  *  This function spawns the management thread and establishes a connection to the fhmgr.
  *
  *  @param standalone flag to set management thread to run without a central manager
@@ -55,7 +55,7 @@ typedef struct {
 FH_STATUS fh_shr_mgmt_start(int standalone, const fh_info_build_t *info, const char *proc,
                             fh_shr_mgmt_cb_t *callbacks);
 
-/** 
+/**
  *  @brief Block until the management thread has exited
  */
 void fh_shr_mgmt_wait();

@@ -1,16 +1,18 @@
 /*
- * This file is part of Collaborative Software Initiative Feed Handlers (CSI FH).
+ * Copyright (C) 2008, 2009, 2010 The Collaborative Software Foundation.
  *
- * CSI FH is free software: you can redistribute it and/or modify it under the terms of the
+ * This file is part of FeedHandlers (FH).
+ *
+ * FH is free software: you can redistribute it and/or modify it under the terms of the
  * GNU Lesser General Public License as published by the Free Software Foundation, either version 3
  * of the License, or (at your option) any later version.
- * 
- * CSI FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ *
+ * FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with CSI FH.  If not, see <http://www.gnu.org/licenses/>.
+ * along with FH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 // System headers
@@ -39,11 +41,11 @@ const char *fh_test_msg_typestr(fh_test_msg_type_t type)
 
     case ERROR:
         return "Error";
-        
+
     case FAILURE:
         return "Failure";
     }
-    
+
     return "Unknown problem";
 }
 
@@ -60,11 +62,11 @@ const char *fh_test_msg_uctypestr(fh_test_msg_type_t type)
 
     case ERROR:
         return "ERROR";
-        
+
     case FAILURE:
         return "FAILURE";
     }
-    
+
     return "UNKNOWN";
 }
 
@@ -77,14 +79,14 @@ const char *fh_test_msg_uctypestr(fh_test_msg_type_t type)
 void fh_test_msg_add(fh_test_msg_type_t type, const char *message, fh_test_sym_test_t *test)
 {
     fh_test_msg_t *msg;
-    
+
     // allocate space for the new message
     messages = (fh_test_msg_t *)realloc(messages, ++msg_count * sizeof(fh_test_msg_t));
     if (messages == NULL) {
         fprintf(stderr, "\nERROR: allocating message memory: %s (%d)\n", strerror(errno), errno);
         exit(1);
     }
-    
+
     // copy all relevant data into the newly allocated message
     msg = &messages[msg_count - 1];
     msg->type = type;
@@ -100,7 +102,7 @@ void fh_test_msg_add(fh_test_msg_type_t type, const char *message, fh_test_sym_t
 void fh_test_msg_print()
 {
     long i;
-    
+
     for (i = 0; i < msg_count; i++) {
         printf("\n\n%ld) %s", i + 1, messages[i].message);
     }

@@ -1,16 +1,18 @@
 /*
- * This file is part of Collaborative Software Initiative Feed Handlers (CSI FH).
+ * Copyright (C) 2008, 2009, 2010 The Collaborative Software Foundation.
  *
- * CSI FH is free software: you can redistribute it and/or modify it under the terms of the
+ * This file is part of FeedHandlers (FH).
+ *
+ * FH is free software: you can redistribute it and/or modify it under the terms of the
  * GNU Lesser General Public License as published by the Free Software Foundation, either version 3
  * of the License, or (at your option) any later version.
- * 
- * CSI FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ *
+ * FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with CSI FH.  If not, see <http://www.gnu.org/licenses/>.
+ * along with FH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include <stdio.h>
@@ -43,7 +45,7 @@ FH_STATUS fh_mcast_ttl(int s, uint8_t ttl)
 FH_STATUS fh_mcast_if(int s, char *ifname)
 {
     uint32_t ifaddr;
-  
+
     ifaddr = fh_net_ifaddr(s, ifname);
     if (ifaddr == 0) {
         FH_LOG(NET, ERR, ("NET> Failed to get interface address (%s)", ifname));
@@ -87,7 +89,7 @@ FH_STATUS fh_mcast_join(int s, uint32_t ifaddr, uint32_t mcaddr)
 
     mreq.imr_multiaddr.s_addr = mcaddr;
     mreq.imr_interface.s_addr = ifaddr;
-      
+
     if (setsockopt(s, IPPROTO_IP, IP_ADD_MEMBERSHIP, (char *)&mreq, sizeof(mreq)) < 0) {
         FH_LOG(NET, ERR, ("NET> setsockopt IP_ADD_MEMBERSHIP(%s) failed on socket #%d: %d",
             fh_net_ntoa(mcaddr), s, errno));
@@ -108,7 +110,7 @@ FH_STATUS fh_mcast_leave(int s, uint32_t ifaddr, uint32_t mcaddr)
 
     mreq.imr_multiaddr.s_addr = mcaddr;
     mreq.imr_interface.s_addr = ifaddr;
-      
+
     if (setsockopt(s, IPPROTO_IP, IP_DROP_MEMBERSHIP, (char *)&mreq, sizeof(mreq)) < 0) {
         FH_LOG(NET, ERR, ("NET> setsockopt IP_DROP_MEMBERSHIP(%s) failed on socket #%d: %d",
             fh_net_ntoa(mcaddr), s, errno));

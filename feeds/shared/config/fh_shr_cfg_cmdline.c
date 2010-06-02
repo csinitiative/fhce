@@ -4,7 +4,7 @@
  * CSI FH is free software: you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation, either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * CSI FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
@@ -72,7 +72,7 @@ void fh_shr_cfg_cmd_parse(int argc, char **argv, const char *name, fh_shr_cfg_op
 {
     int          op;
     extern char *optarg;
-    
+
     // get the program name by removing any path information
     FH_PNAME_GET(options->program_name, argv);
 
@@ -91,17 +91,17 @@ void fh_shr_cfg_cmd_parse(int argc, char **argv, const char *name, fh_shr_cfg_op
         case 's':
             options->standalone = 1;
             break;
-            
+
         case 'p':
             strcpy(options->process, optarg);
             break;
-            
+
         case 'v':
             options->display_version = 1;
             break;
         }
     }
-    
+
     if (!options->display_version) {
         fh_shr_cfg_cmd_validate(options);
     }

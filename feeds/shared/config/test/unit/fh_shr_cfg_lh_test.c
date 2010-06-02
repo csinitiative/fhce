@@ -4,7 +4,7 @@
  * CSI FH is free software: you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation, either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * CSI FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
@@ -35,13 +35,13 @@ const char *valid_config()
     char    *filename;
     int      tmpdes;
     FILE    *outfile;
-    
+
     /* create a temp file in which to create the basic configuration file */
     filename = (char *)malloc(sizeof(char) * 100);
     strcpy(filename, "/tmp/fhtest.XXXXXX");
     tmpdes = mkstemp(filename);
     outfile = fdopen(tmpdes, "w+");
-    
+
     /* output a basic configuration file with all of the elements available in config files */
     fprintf(outfile,
         "itch = {"
@@ -57,7 +57,7 @@ const char *valid_config()
         "    }"
         "}"
     );
-    
+
     /* close the tempfile and return the filename */
     fclose(outfile);
     return filename;
@@ -69,16 +69,16 @@ const char *empty_config()
     char    *filename;
     int      tmpdes;
     FILE    *outfile;
-    
+
     /* create a temp file in which to create the basic configuration file */
     filename = (char *)malloc(sizeof(char) * 100);
     strcpy(filename, "/tmp/fhtest.XXXXXX");
     tmpdes = mkstemp(filename);
     outfile = fdopen(tmpdes, "w+");
-    
+
     /* print an empty string to the file */
     fprintf(outfile, "\n");
-    
+
     /* close the tempfile and return the filename */
     fclose(outfile);
     return filename;
@@ -97,11 +97,11 @@ void test_get_proc_failure_with_no_name_and_invalid_config()
     const char       *filename;
     fh_cfg_node_t    *config;
     char              process[MAX_PROPERTY_LENGTH] = "\0";
-    
+
     filename = empty_config();
     config = fh_cfg_load(filename);
     delete_config(filename);
-    
+
     FH_TEST_ASSERT_NOTNULL(config);
     FH_TEST_ASSERT_EQUAL(fh_shr_cfg_lh_get_proc(process, "itch", config), FH_ERROR);
 }
@@ -113,7 +113,7 @@ void test_get_proc_success_with_no_name_and_valid_config()
     const char       *filename;
     fh_cfg_node_t    *config;
     char              process[MAX_PROPERTY_LENGTH] = "\0";
-    
+
     filename = valid_config();
     config = fh_cfg_load(filename);
     delete_config(filename);
@@ -130,7 +130,7 @@ void test_get_proc_failure_with_nonexistent_name()
     const char       *filename;
     fh_cfg_node_t    *config;
     char              process[MAX_PROPERTY_LENGTH] = "bar";
-    
+
     filename = valid_config();
     config = fh_cfg_load(filename);
     delete_config(filename);
@@ -145,7 +145,7 @@ void test_get_proc_success_with_existent_name()
     const char       *filename;
     fh_cfg_node_t    *config;
     char              process[MAX_PROPERTY_LENGTH] = "foo";
-    
+
     filename = valid_config();
     config = fh_cfg_load(filename);
     delete_config(filename);
@@ -160,7 +160,7 @@ void test_load_failure_with_nonexistent_name()
     const char              *filename;
     fh_shr_cfg_lh_proc_t     lh_config;
     fh_cfg_node_t           *config;
-    
+
     filename = valid_config();
     config = fh_cfg_load(filename);
     delete_config(filename);
@@ -176,7 +176,7 @@ void test_load_success_with_existent_name()
     const char              *filename;
     fh_shr_cfg_lh_proc_t     lh_config;
     fh_cfg_node_t           *config;
-    
+
     memset(&lh_config, 0, sizeof(fh_shr_cfg_lh_proc_t));
     filename = valid_config();
     config = fh_cfg_load(filename);
@@ -194,7 +194,7 @@ void test_failure_when_loading_config_with_no_lines()
     fh_shr_cfg_lh_proc_t     lh_config;
     fh_cfg_node_t           *config;
     FILE                    *outfile;
-    
+
     filename = empty_config();
     outfile = fopen(filename, "a");
     fprintf(outfile, "itch = {\n");
@@ -204,7 +204,7 @@ void test_failure_when_loading_config_with_no_lines()
     fprintf(outfile, "    }\n");
     fprintf(outfile, "}\n");
     fclose(outfile);
-    
+
     config = fh_cfg_load(filename);
     delete_config(filename);
     memset(&lh_config, 0, sizeof(fh_shr_cfg_lh_proc_t));
@@ -220,7 +220,7 @@ void test_failure_when_loading_config_with_no_line_configuration_for_process_lin
     fh_shr_cfg_lh_proc_t     lh_config;
     fh_cfg_node_t           *config;
     FILE                    *outfile;
-    
+
     filename = empty_config();
     outfile = fopen(filename, "a");
     fprintf(outfile, "itch = {\n");
@@ -236,7 +236,7 @@ void test_failure_when_loading_config_with_no_line_configuration_for_process_lin
     fprintf(outfile, "    }\n");
     fprintf(outfile, "}\n");
     fclose(outfile);
-    
+
     config = fh_cfg_load(filename);
     delete_config(filename);
     memset(&lh_config, 0, sizeof(fh_shr_cfg_lh_proc_t));
@@ -252,7 +252,7 @@ void test_load_correct_line_configuration_for_valid_config()
     unsigned long            address;
     fh_shr_cfg_lh_proc_t     lh_config;
     fh_cfg_node_t           *config;
-    
+
     memset(&lh_config, 0, sizeof(fh_shr_cfg_lh_proc_t));
     filename = valid_config();
     config = fh_cfg_load(filename);
@@ -262,15 +262,15 @@ void test_load_correct_line_configuration_for_valid_config()
     FH_TEST_ASSERT_NOTNULL(config);
     FH_TEST_ASSERT_EQUAL(fh_shr_cfg_lh_load("foo", "itch", config, &lh_config), FH_OK);
     FH_TEST_ASSERT_EQUAL(lh_config.num_lines, 1);
-    
+
     /* assert that the proper lines are enabled/disabled */
     FH_TEST_ASSERT_TRUE(lh_config.lines[0].primary.enabled);
     FH_TEST_ASSERT_FALSE(lh_config.lines[0].secondary.enabled);
-    
+
     /* assert that the proper options are set for the line(s) that is/are enabled */
     address = inet_addr(fh_cfg_get_string(config, "itch.lines.foo.primary.address"));
     FH_TEST_ASSERT_LEQUAL((long int)lh_config.lines[0].primary.address, (long int)address);
     FH_TEST_ASSERT_LEQUAL((long int)lh_config.lines[0].primary.port,  (long int)12345);
     FH_TEST_ASSERT_STREQUAL(lh_config.lines[0].primary.interface, "eth0");
-    
+
 }
