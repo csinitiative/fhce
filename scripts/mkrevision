@@ -1,0 +1,75 @@
+#!/bin/bash
+
+#  This file is part of Collaborative Software Initiative Feed Handlers (CSI FH).
+# 
+#  CSI FH is free software: you can redistribute it and/or modify it under the terms of the
+#  GNU Lesser General Public License as published by the Free Software Foundation, either version 3
+#  of the License, or (at your option) any later version.
+#  
+#  CSI FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+#  even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Lesser General Public License for more details.
+# 
+#  You should have received a copy of the GNU Lesser General Public License
+#  along with CSI FH.  If not, see <http://www.gnu.org/licenses/>.
+
+if [ $# -ne 1 ]; then
+    echo "Usage: $(basename $0) REV_FILE"
+    exit 1
+fi
+
+REV_FILE=$1
+
+# ----------------------------------------------------------------------------
+# Get the current date
+# ----------------------------------------------------------------------------
+
+BUILD_DATE=$(date +"%b %d %H:%M %Y")
+
+# ----------------------------------------------------------------------------
+# Get the URL of the build directory
+# ----------------------------------------------------------------------------
+
+BUILD_URL=$(git config --get remote.origin.url)
+
+# ----------------------------------------------------------------------------
+# Get the revision of the build directory
+# ----------------------------------------------------------------------------
+
+BUILD_REV=$(git log -1 --pretty=format:"%h")
+
+
+TAG="__"$(echo $REV_FILE | tr 'a-z.' 'A-Z_')"__"
+
+ARCH=$(uname -m)
+KVER=$(uname -r)
+
+cat <<EOF
+--------------------------------------------
+> Generating $REV_FILE...
+--------------------------------------------
+  > BUILD_USER    "$USER"
+  > BUILD_ARCH    "$ARCH"
+  > BUILD_KVER    "$KVER"
+  > BUILD_HOST    "$HOSTNAME"
+  > BUILD_DATE    "$BUILD_DATE"
+  > BUILD_URL     "$BUILD_URL"
+  > BUILD_REV     "$BUILD_REV"
+--------------------------------------------
+
+EOF
+
+cat > $REV_FILE <<EOF
+#ifndef $TAG
+#define $TAG
+
+#define BUILD_USER    "$USER"
+#define BUILD_ARCH    "$ARCH"
+#define BUILD_KVER    "$KVER"
+#define BUILD_HOST    "$HOSTNAME"
+#define BUILD_DATE    "$BUILD_DATE"
+#define BUILD_URL     "$BUILD_URL"
+#define BUILD_REV     "$BUILD_REV"
+
+#endif /* $TAG */
+EOF

@@ -1,0 +1,17 @@
+Feature: standard compilation targets should work as expected
+
+	Scenario: A "make" in the feeds/itch/multicast/v1 directory should build an fhitch_v1 binary
+		Given an ITCH feed handler
+		When a make is performed on feeds/itch/multicast/v1 with target [NONE]
+		Then the file fhitch_v1 should be produced
+				
+	Scenario: A "make dist" in the feeds/itch directory should build a working FH environment
+		Given an ITCH feed handler
+		When a make is performed on feeds/itch with target dist
+		Then a standard directory structure should exist in the dist directory
+		
+	Scenario: A "make clean" in the feeds/itch directory should eliminate all build products
+		Given an ITCH feed handler
+		When a make is performed on feeds/itch with target clean
+		Then there should be no build products left
+	

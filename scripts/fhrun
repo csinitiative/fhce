@@ -1,0 +1,74 @@
+#!/bin/bash
+
+#  This file is part of Collaborative Software Initiative Feed Handlers (CSI FH).
+# 
+#  CSI FH is free software: you can redistribute it and/or modify it under the terms of the
+#  GNU Lesser General Public License as published by the Free Software Foundation, either version 3
+#  of the License, or (at your option) any later version.
+#  
+#  CSI FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+#  even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Lesser General Public License for more details.
+# 
+#  You should have received a copy of the GNU Lesser General Public License
+#  along with CSI FH.  If not, see <http://www.gnu.org/licenses/>.
+
+PNAME=$(basename $0)
+
+usage() {
+  echo "Usage: $PNAME [ fhctl | fhmgr | opra ]"
+  exit 1
+}
+
+if [ $# -lt 1 ]; then
+    usage
+fi
+
+ARCH=$(arch -m)
+
+if [ -f /etc/redhat-release ]; then
+    DIST="RedHat"
+    OS=rhel$(sed 's/^.*release \([0-9]\+\).*$/\1/' /etc/redhat-release)
+elif [ -f /etc/SuSE-release ]; then
+    DIST="SuSE"
+    OS=sles$(grep VERSION /etc/SuSE-release | awk '{print $3}')
+else
+    echo "Distribution not supported: $(uname -a)"
+    exit 1
+fi
+
+KVER=$(uname -r | awk -F. '{print $1 "." $2 }')
+
+BUILD=${OS}_${KVER}_${ARCH}
+
+BIN_DIR=bin_$BUILD
+LIB_DIR=lib_$BUILD
+
+case $1 in
+    fhctl)
+        ./mgmt/fhctl/$BIN_DIR/fhctl
+        ;;
+
+    fhmgr)
+        ./mgmt/fhmgr/$BIN_DIR/fhmgr -d
+        ;;
+
+    opra)
+        if [ $# -ne 2 ]; then
+            echo "Usage: $PNAME opra <INSTANCE>"
+            exit 1
+        fi
+
+        INSTANCE=$2
+
+        ./feeds/opra/fast/v1/$BIN_DIR/fhopra                \
+           -f feeds/opra/fast/etc/opra.conf -i $INSTANCE    \
+           -o feeds/opra/fast/etc/listedoptions.txt         \
+           -p plugins/tervela/opra/$LIB_DIR -d
+        ;;
+
+    *)
+        echo "Invalid command: $1"
+        usage
+        ;;
+esac

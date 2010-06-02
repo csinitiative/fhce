@@ -1,0 +1,59 @@
+Feature: running the feed handler with various parameters should produce certain output
+
+	Scenario: Running the fhitch_v1 binary with the argument "-?" should print usage
+		Given an ITCH feed handler
+		When a make is performed on feeds/itch with target dist
+		And the dist binary itch/bin/fhitch_v1 is used
+		And passed arguments "-?"
+		And run with captured output
+		Then "Start the ITCH feed handler" is seen on stderr
+		And "Usage: fhitch_v1" is seen on stderr
+		And "-d" is seen on stderr
+		And "Display the version information" is seen on stderr
+
+	Scenario: Running the fhitch_v1 binary with the argument "-h" should print usage
+		Given an ITCH feed handler
+		When a make is performed on feeds/itch with target dist
+		And the dist binary itch/bin/fhitch_v1 is used
+		And passed arguments "-?"
+		And run with captured output
+		Then "Start the ITCH feed handler" is seen on stderr
+		And "Usage: fhitch_v1" is seen on stderr
+		And "-d" is seen on stderr
+		And "Display the version information" is seen on stderr
+
+	Scenario: Feed handler runs in an alternate directory with FH_HOME set
+		Given an ITCH feed handler
+		When a make is performed on feeds/itch with target dist
+		And the dist binary itch/bin/fhitch_v1 is used
+		And passed arguments "-v"
+		And FH_HOME is set to "[DIST]"
+		And run with captured output
+		Then "ERROR" is not seen on stderr
+
+	Scenario: Specified command line options should be accepted
+		Given an ITCH feed handler
+		When a make is performed on feeds/itch with target dist
+		And the dist binary itch/bin/fhitch_v1 is used
+		And passed arguments "-d -v"
+		And FH_HOME is set to "[DIST]"
+		And run with captured output
+		Then "invalid option --" is not seen on stderr
+
+	Scenario: Specified command line options should not be accepted
+		Given an ITCH feed handler
+		When a make is performed on feeds/itch with target dist
+		And the dist binary itch/bin/fhitch_v1 is used
+		And passed arguments "-g"
+		And run with captured output
+		Then "invalid option --" is seen on stderr
+		
+	Scenario: Running the feed handler with the "-d" flag should cause output to the console
+		Given an ITCH feed handler
+		When a make is performed on feeds/itch with target dist
+		And the dist binary itch/bin/fhitch_v1 is used
+		And passed arguments "-d -v"
+		And FH_HOME is set to "[DIST]"
+		And run with captured output
+		Then "Starting ITCH version " is seen on stdout
+		

@@ -1,0 +1,24 @@
+Feature: behavior when trying to register for the same hook twice should be dictated by the
+allow_override flag in fh_plugin.c
+
+
+	Scenario: Loading a plugin with two registrations for the same hook produces and error
+		Given directory is changed to "common/test/functional/test_program"
+		
+		When the command "make" is run
+		And the command "./test_program 0 ." is run with captured output
+		
+		Then "ERR:  plugin attempted to re-register a hook" is seen on stderr
+		And not exit with code 0
+
+
+	Scenario: Setting override flag on prevents error on multiple hook registrations
+		Given directory is changed to "common/test/functional/test_program"
+
+		When the command "make" is run
+		And the command "./test_program 1 ." is run with captured output
+
+		Then "INFO: plugin hook override turned ON" is seen on stderr
+		And "WARN: plugin hook overriden" is seen on stderr
+		And "INFO: Loaded plugin: test_plugin.so" is seen on stderr
+		And exit with code 0
