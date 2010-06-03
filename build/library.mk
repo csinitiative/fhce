@@ -40,9 +40,6 @@ $(LIB): $(REV_FILE) $(OBJS)
 	$(AR) rc $@ $(OBJS)
 	$(RANLIB) $@
 
-$(DIRS):
-	@if [ ! -d $@ ]; then mkdir -p $@; fi
-
 clean:
 	rm -rf $(DIRS)
 	@if [ -d test ]; then $(MAKE) -C test $@; fi

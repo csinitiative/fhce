@@ -59,9 +59,6 @@ $(LIB): $(REV_FILE) $(OBJS)
 	$(AR) rc $@ $(OBJS)
 	$(RANLIB) $@
 
-$(DIRS):
-	@if [ ! -d $@ ]; then mkdir -p $@; fi
-
 $(REV_FILE):
 	@$(MKREVISION) $@
 
@@ -71,10 +68,6 @@ clean:
 
 test: FORCE
 	$(MAKE) -C test all
-
-dist:
-
-rpmdist:
 
 # ------------------------------------------------------------------------------
 # Build the object files

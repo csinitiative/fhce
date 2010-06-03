@@ -15,7 +15,7 @@
 
 SUBDIRS = multicast
 
-all clean dist rpmdist test:
+all clean test:
 	@for dir in $(SUBDIRS); do  \
 		$(MAKE) -C $$dir $@;    \
 	done

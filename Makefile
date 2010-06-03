@@ -28,14 +28,20 @@ include $(TOP)/build/defs.mk
 SUBDIRS  = common msg feeds mgmt
 TESTDIRS = test common feeds
 ALLDIRS	 = $(sort $(SUBDIRS) $(TESTDIRS))
+DISTDIRS = mgmt feeds/itch/multicast/v1
 
-all dist rpmdist:
+all:
 	@for dir in $(SUBDIRS); do   \
 		$(MAKE) -C $$dir $@;     \
 	done
 
+dist tar rpmdist:
+	@for dir in $(DISTDIRS); do  \
+		$(MAKE) -C $$dir $@;     \
+	done
+
 clean:
-	rm -rf $(DISTDIR) $(RPMDIR)
+	rm -rf $(DISTDIR) $(TARDIR) $(RPMDIR)
 	@for dir in $(ALLDIRS); do   \
 		$(MAKE) -C $$dir $@;     \
 	done

@@ -17,5 +17,3 @@ all clean test:
 	@for dir in $(SUBDIRS); do  \
 		$(MAKE) -C $$dir $@;    \
 	done
-
-dist rpmdist:

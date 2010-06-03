@@ -61,8 +61,13 @@ DEPDIR  = dep_$(BUILD)
 LIBDIR  = lib_$(BUILD)
 SRCDIR  = src_$(BUILD)
 DISTDIR = dist_$(BUILD)
+TARDIR  = tar_$(BUILD)
+DIRS	= $(OBJDIR) $(BINDIR) $(DEPDIR) $(LIBDIR) $(SRCDIR) $(DISTDIR)
+
 RPMDIR  = $(TOPABS)/rpmdist_$(BUILD)
 RPMDIRS = $(addprefix $(RPMDIR)/,BUILD RPMS SOURCES SPECS SRPMS)
+
+CURRDIR = $(shell pwd)
 
 ifdef INSTROOT
 	INSTDIR = $(INSTROOT)/opt/csi/fh
@@ -71,16 +76,12 @@ else
 endif
 
 # ------------------------------------------------------------------------------
-# Dependencies
+# Dependencies & Versioning
 # ------------------------------------------------------------------------------
 
 MAKEDEPEND = gcc -M $(CFLAGS) -o $*.d $<;                                \
              sed 's|^\(.*\.o:\)|$(OBJDIR)/\1|g' $*.d > $(DEPDIR)/$*.P;   \
              rm -f $*.d
-
-# ------------------------------------------------------------------------------
-# Versioning
-# ------------------------------------------------------------------------------
 
 MKREVISION = $(TOP)/scripts/mkrevision
 
@@ -108,11 +109,13 @@ YACC = bison
 TAR  = tar
 
 # ------------------------------------------------------------------------------
-# Flags for generating code tarballs
+# Flags for generating packages (tgz & RPM)
 # ------------------------------------------------------------------------------
 
-TAREXCL  = *_$(BUILD) .svn svn* *~
-TARFLAGS = -cz $(addprefix --exclude=,$(TAREXCL))
+PKGNAME    = (unknown)
+TARFLAGS   = -cz
+FINDFLAGS  = \( ! -name "*_*_?.?_*" -o -prune \) ! -name "*_*_?.?_*"
+FINDFLAGS += ! -wholename ".git*" ! -name "*~"
 
 # ------------------------------------------------------------------------------
 # Default compiler and linker flags
@@ -151,6 +154,9 @@ INSTFLAGS = -m 755
 DEFAULT: all
 
 $(RPMDIRS):
+	@if [ ! -d $@ ]; then mkdir -p $@; fi
+
+$(DIRS):
 	@if [ ! -d $@ ]; then mkdir -p $@; fi
 
 requireversion: FORCE

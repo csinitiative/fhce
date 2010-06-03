@@ -22,12 +22,11 @@ TOP = ..
 include $(TOP)/build/defs.mk
 
 # ------------------------------------------------------------------------------
-# Tar "stuff"
+# Distribution "stuff"
 # ------------------------------------------------------------------------------
 
-TAROUT   = $(RPMDIR)/SOURCES/csifh-core-$(VERSION).tar.gz
-TARBASE  = $(notdir $(shell cd $(TOP) && pwd))
-TARFILES = build common mgmt scripts
+PKGFILES = build common mgmt msg scripts
+PKGNAME  = core
 
 # ------------------------------------------------------------------------------
 # Pass major targets along to subdirs (except RPM building)
@@ -40,14 +39,5 @@ all clean dist:
 		$(MAKE) -C $$dir $@;    \
 	done
 
-tar: requireversion $(RPMDIRS)
-	@echo "Generating core package source tarball..."
-	@$(TAR) $(TARFLAGS) -C $(TOP)/.. -f $(TAROUT) $(addprefix $(TARBASE)/,$(TARFILES))
-
-spec: $(RPMDIRS)
-	@echo "Copying spec file to RPM build directory..."
-	@cp -f $(TOP)/rpm/csifh-core.spec $(RPMDIR)/SPECS/
-
-rpmdist: tar spec $(RPMDIRS)
-	rpmbuild $(RPMFLAGS) $(RPMDIR)/SPECS/csifh-core.spec
-
+# include packaging targets
+include $(TOP)/build/dist.mk

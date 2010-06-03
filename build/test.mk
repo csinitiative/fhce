@@ -22,7 +22,7 @@ SRCS		:= $(wildcard *.c)
 OBJS		:= $(addprefix $(OBJDIR)/,$(SRCS:.c=.o))
 BINS		:= $(addprefix $(BINDIR)/,$(patsubst %_test.c,%.test,$(SRCS)))
 
-DIRS		:= $(OBJDIR) $(BINDIR)
+DIRS		 = $(OBJDIR) $(BINDIR)
 
 # ------------------------------------------------------------------------------
 # Linked libraries
@@ -57,9 +57,6 @@ $(BINDIR)/%.test: $(OBJDIR)/%_test.o
 
 $(OBJDIR)/%_test.o : %_test.c
 	$(CC) $(CFLAGS) -o $@ -c $<
-
-$(DIRS):
-	@if [ ! -d $@ ]; then mkdir -p $@; fi
 
 clean: FORCE
 	rm -rf $(DIRS)

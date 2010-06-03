@@ -36,12 +36,11 @@ INSTPLGDIR    	 = $(INSTDIR)/plugins/
 DIRS   			 = $(OBJDIR) $(BINDIR) $(DEPDIR)
 
 # ------------------------------------------------------------------------------
-# Tar "stuff"
+# Distribution "stuff"
 # ------------------------------------------------------------------------------
 
-TAROUT   = $(RPMDIR)/SOURCES/csifh-itchv1-$(VERSION).tar.gz
-TARBASE  = $(notdir $(shell cd $(TOP) && pwd))
-TARFILES = build common mgmt msg scripts feeds/itch feeds/shared
+PKGFILES = build common mgmt msg scripts feeds/itch feeds/shared plugins/sample/itch
+PKGNAME  = itchv1
 
 # ------------------------------------------------------------------------------
 # Linked libraries
@@ -126,9 +125,6 @@ $(MGMTLIB): FORCE
 $(MSGLIB): FORCE
 	@$(MAKE) -C $(MSGDIR) all
 
-$(DIRS):
-	@if [ ! -d $@ ]; then mkdir -p $@; fi
-
 # ------------------------------------------------------------------------------
 # --- Build the object files
 # ------------------------------------------------------------------------------
@@ -147,16 +143,8 @@ dist: all
 		echo "install $(INSTFLAGS) $(FH_CFG) $(INSTETCDIR)";	\
 	fi
 
-tar: requireversion $(RPMDIRS)
-	@echo "Generating itchv1 package source tarball..."
-	@$(TAR) $(TARFLAGS) -C $(TOP)/.. -f $(TAROUT) $(addprefix $(TARBASE)/,$(TARFILES))
-
-spec: $(RPMDIRS)
-	@echo "Copying spec file to RPM build directory..."
-	@cp -f $(TOP)/rpm/csifh-itchv1.spec $(RPMDIR)/SPECS/
-
-rpmdist: tar spec $(RPMDIRS)
-	rpmbuild $(RPMFLAGS) $(RPMDIR)/SPECS/csifh-itchv1.spec
+# include packaging targets
+include $(TOP)/build/dist.mk
 
 clean:
 	rm -rf $(DIRS)

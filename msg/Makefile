@@ -49,9 +49,6 @@ $(LIB): $(OBJS)
 	$(AR) rc $@ $(OBJS)
 	$(RANLIB) $@
 
-$(DIRS):
-	@if [ ! -d $@ ]; then mkdir -p $@; fi
-
 # ------------------------------------------------------------------------------
 # --- Build the object files
 # ------------------------------------------------------------------------------
@@ -62,10 +59,6 @@ $(OBJDIR)/%.o : %.c
 
 clean:
 	rm -rf $(OBJDIR) $(DEPDIR) $(LIBDIR)
-
-dist:
-
-rpmdist:
 
 -include $(DEPS)
 

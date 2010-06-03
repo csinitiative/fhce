@@ -75,9 +75,6 @@ $(SHAREDLIB): FORCE
 $(MGMTLIB): FORCE
 	@$(MAKE) -C $(MGMTDIR) all
 
-$(DIRS):
-	@if [ ! -d $@ ]; then mkdir -p $@; fi
-
 $(REV_FILE):
 	@$(MKREVISION) $@
 

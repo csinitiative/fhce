@@ -53,9 +53,6 @@ $(LIB): $(OBJS)
 	$(AR) rc $@ $(OBJS)
 	$(RANLIB) $@
 
-$(DIRS):
-	@if [ ! -d $@ ]; then mkdir -p $@; fi
-
 # ------------------------------------------------------------------------------
 # --- Build the object files
 # ------------------------------------------------------------------------------
@@ -75,10 +72,6 @@ $(OBJDIR)/%.o : %.y
 clean:
 	rm -rf $(DIRS)
 	$(MAKE) -C test $@
-
-dist:
-
-rpmdist:
 
 test: FORCE
 	$(MAKE) -C test all

@@ -50,17 +50,10 @@ $(LIB): $(REV_FILE) $(OBJS)
 	$(AR) rc $@ $(OBJS)
 	$(RANLIB) $@
 
-$(DIRS):
-	@if [ ! -d $@ ]; then mkdir -p $@; fi
-
 clean:
 	rm -rf $(DIRS)
-#	$(MAKE) -C test $@
 
-#test: FORCE
-#	$(MAKE) -C test all
-
-dist rpmdist test:
+test:
 
 # ------------------------------------------------------------------------------
 # Build the object files
