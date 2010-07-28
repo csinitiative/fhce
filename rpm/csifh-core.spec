@@ -1,15 +1,17 @@
-#  This file is part of Collaborative Software Initiative Feed Handlers (CSI FH).
+#  Copyright (C) 2008, 2009, 2010 The Collaborative Software Foundation.
 #
-#  CSI FH is free software: you can redistribute it and/or modify it under the terms of the
-#  GNU General Public License as published by the Free Software Foundation, either version 3
+#  This file is part of FeedHandlers (FH).
+#
+#  FH is free software: you can redistribute it and/or modify it under the terms of the
+#  GNU Lesser General Public License as published by the Free Software Foundation, either version 3
 #  of the License, or (at your option) any later version.
 #
-#  CSI FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+#  FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
 #  even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
+#  GNU Lesser General Public License for more details.
 #
-#  You should have received a copy of the GNU General Public License
-#  along with CSI FH.  If not, see <http://www.gnu.org/licenses/>.
+#  You should have received a copy of the GNU Lesser General Public License
+#  along with FH.  If not, see <http://www.gnu.org/licenses/>.
 
 # ------------------------------------------------------------------------------
 # Macro definition
@@ -22,17 +24,17 @@
 # Introduction section
 # ------------------------------------------------------------------------------
 
-summary: Common components of the CSI FH feed handler suite
+summary: Common components of the FeedHandler suite
 name: csifh-core
 version: %{version}
 release: 1
 group: Feed Handlers
-vendor: Collaborative Software Initiative
-url: https://csi-fh.csinitiative.net
+vendor: Collaborative Software Foundation
+url: http://openmarketdata.org
 license: LGPLv3
 source: %{name}-%{version}.tar.gz
 %description
-The Collaborative Software Initiative Feed Handler is an open market data
+The Collaborative Software Foundation Feed Handler is an open market data
 feed handler. It is designed to be very fast while simultaneously being
 flexible and extensible.
 

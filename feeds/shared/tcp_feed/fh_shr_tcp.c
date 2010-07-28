@@ -1,26 +1,20 @@
 /*
- * This file is part of Collaborative Software Initiative Feed Handlers (CSI FH).
+ * Copyright (C) 2008, 2009, 2010 The Collaborative Software Foundation.
  *
- * CSI FH is free software: you can redistribute it and/or modify it under the terms of the
- * GNU General Public License as published by the Free Software Foundation, either version 3
+ * This file is part of FeedHandlers (FH).
+ *
+ * FH is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU Lesser General Public License as published by the Free Software Foundation, either version 3
  * of the License, or (at your option) any later version.
  *
- * CSI FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * FH is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with CSI FH.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with FH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-/********************************************************************/
-/*  File: fh_shr_tcp.c                                              */
-/*  Usage: Main common TCP function                                 */
-/*  Author: Nitin Shah of Collaborative Software Initiative         */
-/*  Conception: June 8, 2009                                        */
-/*        Initial version created for the DirectEdge feed handler   */
-/********************************************************************/
 
 /*
  * OS Header files
@@ -61,15 +55,6 @@
  */
 #include "fh_shr_tcp_lh.h"
 #include "fh_shr_tcp.h"
-
-
-/********************************************************************/
-/*  File: fh_shr_tcp.c                                             */
-/*  Usage: main entry point to the feed process                     */
-/*  Author: Nitin Shah of Collaborative Software Initiative         */
-/*  Conception: June 1, 2009                                        */
-/*        Initial version created for the DirectEdge feed handler   */
-/********************************************************************/
 
 
 /*
