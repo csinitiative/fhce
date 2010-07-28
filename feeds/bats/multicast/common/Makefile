@@ -24,7 +24,7 @@ include $(TOP)/build/defs.mk
 DIRS 		 = $(OBJDIR) $(LIBDIR) $(DEPDIR)
 INCLDIRS	 = common mgmt/lib mgmt/lib/admin feeds/shared/config feeds/shared/mirrored_mcast
 INCLDIRS	+= feeds/shared/mgmt_thread feeds/shared/line_handler feeds/shared/lookup_tables
-INCLDIRS	+= feeds/shared/gap_mgmt
+INCLDIRS    += feeds/shared/gap_mgmt
 
 # Basic sources and targets
 SRCS      	 = $(wildcard *.c)
@@ -41,13 +41,13 @@ INCLUDES 	 = $(addprefix -I$(TOP)/,$(INCLDIRS))
 # Versioning
 # ------------------------------------------------------------------------------
 
-REV_FILE   	 = fh_itch_revision.h
+REV_FILE   	 = fh_bats_revision.h
 
 # ------------------------------------------------------------------------------
-# Target - ITCH Common library
+# Target - BATS Common library
 # ------------------------------------------------------------------------------
 
-LIB = $(LIBDIR)/libfhitch.a
+LIB = $(LIBDIR)/libfhbats.a
 
 # ------------------------------------------------------------------------------
 # Generic make targets
@@ -64,10 +64,8 @@ $(REV_FILE):
 
 clean:
 	rm -rf $(DIRS) $(REV_FILE)
-	$(MAKE) -C test $@
 
-test: FORCE
-	$(MAKE) -C test all
+test:
 
 # ------------------------------------------------------------------------------
 # Build the object files

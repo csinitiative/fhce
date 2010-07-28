@@ -13,72 +13,72 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with FH.  If not, see <http://www.gnu.org/licenses/>.
 
-TOP = ../../../..
+TOP = ../../..
 
 include $(TOP)/build/defs.mk
 
 # ------------------------------------------------------------------------------
-# Set up directory/target variables
+# Targets
 # ------------------------------------------------------------------------------
 
-DIRS 		 = $(OBJDIR) $(LIBDIR) $(DEPDIR)
-INCLDIRS	 = common mgmt/lib mgmt/lib/admin feeds/shared/config feeds/shared/mirrored_mcast
-INCLDIRS	+= feeds/shared/mgmt_thread feeds/shared/line_handler feeds/shared/lookup_tables
-INCLDIRS	+= feeds/shared/gap_mgmt
+SRCS = $(wildcard *.c)
+OBJS = $(addprefix $(OBJDIR)/,$(SRCS:.c=.o))
+DEPS = $(addprefix $(DEPDIR)/,$(SRCS:.c=.P))
 
-# Basic sources and targets
-SRCS      	 = $(wildcard *.c)
-OBJS      	 = $(addprefix $(OBJDIR)/,$(SRCS:.c=.o))
-DEPS 		 = $(addprefix $(DEPDIR)/,$(SRCS:.c=.P))
+DIRS = $(OBJDIR) $(LIBDIR) $(DEPDIR)
 
 # ------------------------------------------------------------------------------
 # Compile flags and includes
 # ------------------------------------------------------------------------------
 
-INCLUDES 	 = $(addprefix -I$(TOP)/,$(INCLDIRS))
+SHRDIR   	 = $(TOP)/feeds/shared
+
+INCLDIR		+= -I$(SHRDIR)/config
+INCLDIR		+= -I$(SHRDIR)/mgmt_thread
+INCLDIR		+= -I$(SHRDIR)/lookup_tables
+INCLDIR		+= -I$(SHRDIR)/line_handler
+
+INCLDIR		+= -I$(TOP)/common -I$(TOP)/common/missing
+INCLDIR		+= -I$(TOP)/mgmt/lib -I$(TOP)/mgmt/lib/admin
+
+INCLDIR		+= -I$(TOP)/feeds/bats/multicast/common
 
 # ------------------------------------------------------------------------------
-# Versioning
+# Compile flags and includes
 # ------------------------------------------------------------------------------
 
-REV_FILE   	 = fh_itch_revision.h
+INCLUDES  	 = $(INCLDIR)
+LDFLAGS   	 = -shared
 
 # ------------------------------------------------------------------------------
-# Target - ITCH Common library
+# Target FH Common library
 # ------------------------------------------------------------------------------
 
-LIB = $(LIBDIR)/libfhitch.a
+INSTDIR 	:= $(INSTDIR)/bats/plugins
+PLUGIN   	 = $(LIBDIR)/sample_bats.so
 
 # ------------------------------------------------------------------------------
-# Generic make targets
+# --- Generic make targets
 # ------------------------------------------------------------------------------
 
-all: $(DIRS) $(FASTDIR) $(LIB)
+all: $(DIRS) $(PLUGIN)
 
-$(LIB): $(REV_FILE) $(OBJS)
-	$(AR) rc $@ $(OBJS)
-	$(RANLIB) $@
+dist: all
+	install $(INSTFLAGS) -d $(INSTDIR)
+	install $(INSTFLAGS) $(PLUGIN) $(INSTDIR)
 
-$(REV_FILE):
-	@$(MKREVISION) $@
-
-clean:
-	rm -rf $(DIRS) $(REV_FILE)
-	$(MAKE) -C test $@
-
-test: FORCE
-	$(MAKE) -C test all
+$(PLUGIN): $(OBJS)
+	$(CC) $(LDFLAGS) -o $@ $(OBJS)
 
 # ------------------------------------------------------------------------------
-# Build the object files
+# --- Build the object files
 # ------------------------------------------------------------------------------
 
-$(OBJDIR)/$(CODECDIR)/%.o : $(CODECDIR)/%.c
-	@$(MAKEDEPEND)
-	$(CC) $(CODECCFLGS) -o $@ -c $<
-
-$(OBJDIR)/%.o : %.c
+$(OBJDIR)/%.o: %.c
 	@$(MAKEDEPEND)
 	$(CC) $(CFLAGS) -o $@ -c $<
+
+clean:
+	rm -rf $(OBJDIR) $(DEPDIR) $(LIBDIR)
 
 -include $(DEPS)

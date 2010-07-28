@@ -11,7 +11,7 @@
 #  You should have received a copy of the GNU General Public License
 #  along with CSI FH.  If not, see <http://www.gnu.org/licenses/>.
 
-SUBDIRS = shared itch
+SUBDIRS = shared itch bats
 
 all clean test:
 	@for dir in $(SUBDIRS); do  \

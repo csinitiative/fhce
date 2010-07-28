@@ -8,5 +8,6 @@ lib_*_*_*
 obj_*_*_*
 src_*_*_*
 bin_*_*_*
+tar_*_*_*
 *dist_*_*_*
 fh_*_revision.h
