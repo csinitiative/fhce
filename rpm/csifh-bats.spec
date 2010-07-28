@@ -17,20 +17,20 @@
 # Macro definition
 # ------------------------------------------------------------------------------
 
-%define instdir /opt/csi/fh/itch
-%define makedir feeds/itch/multicast/v1
-%define plugdir plugins/sample/itch
+%define instdir /opt/csi/fh/bats
+%define makedir feeds/bats/multicast/v1
+%define plugdir plugins/sample/bats
 
 
 # ------------------------------------------------------------------------------
 # Introduction section
 # ------------------------------------------------------------------------------
 
-summary: TotalView-ITCH 3.1 feed handler component of the FeedHandler suite
-name: csifh-itchv1
+summary: BATS Multicast PITCH feed handler component of the FeedHandler suite
+name: csifh-bats
 requires: csifh-core >= %{version}
 requires: expect
-provides: csifh-itch
+provides: csifh-bats
 version: %{version}
 release: 1
 group: Feed Handlers
@@ -43,7 +43,7 @@ The Collaborative Software Foundation Feed Handler is an open market data
 feed handler. It is designed to be very fast while simultaneously being
 flexible and extensible.
 
-This package contains the ITCH v1 feed handler(s).
+This package contains the BATS feed handler(s).
 
 
 # ------------------------------------------------------------------------------
@@ -97,10 +97,9 @@ rm -rf $RPM_BUILD_ROOT
 %post
 
 
-
 # ------------------------------------------------------------------------------
 # Pre-uninstall script
 # ------------------------------------------------------------------------------
 
 %preun
-rm -rf %{instdir}/bin/fhitch
+rm -rf %{instdir}/bin/fhbats
