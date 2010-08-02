@@ -1344,6 +1344,7 @@ FH_STATUS fh_itch_parse_pkt(uint8_t *packet, int length, fh_shr_lh_conn_t *conn)
     int                      i;
     int                      bytes_used;
     int                      rc;
+    static int               inorder = 1;
     fh_shr_cfg_lh_line_t    *linecfg = conn->line->config;
 
     /* first, flush out any expired gaps and declare loss if appropriate */
@@ -1354,7 +1355,14 @@ FH_STATUS fh_itch_parse_pkt(uint8_t *packet, int length, fh_shr_lh_conn_t *conn)
             if (hook_alert) {
                 hook_alert(&rc, FH_ALERT_LOSS, conn);
             }
+            FH_LOG(LH, WARN, ("some gaps have expired, %d message(s) lost", rc));
         }
+    }
+
+    /* log feed state returning to in-order operation status */
+    if (!inorder && gaplist->count == 0) {
+        FH_LOG(LH, STATE, ("all gaps filled or presumed lost, resuming in-order operation"));
+        inorder = 1;
     }
 
     /* increment the number of bytes received on this line by the packet length */
@@ -1400,6 +1408,16 @@ FH_STATUS fh_itch_parse_pkt(uint8_t *packet, int length, fh_shr_lh_conn_t *conn)
         packet += bytes_used;
         length -= bytes_used;
         conn->stats.messages++;
+    }
+
+    /* check to see if in/out of order feed state has changed */
+    if (inorder && gaplist->count > 0) {
+        FH_LOG(LH, STATE, ("gaps found, feed handler beginning out-of-order operation"));
+        inorder = 0;
+    }
+    else if (!inorder && gaplist->count == 0) {
+        FH_LOG(LH, STATE, ("all gaps filled or presumed lost, resuming in-order operation"));
+        inorder = 1;
     }
 
     /* once execution gets here, success! */
