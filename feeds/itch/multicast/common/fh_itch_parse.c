@@ -1352,10 +1352,10 @@ FH_STATUS fh_itch_parse_pkt(uint8_t *packet, int length, fh_shr_lh_conn_t *conn)
         rc = fh_shr_gap_fill_flush(gaplist);
         if (rc > 0) {
             conn->stats.lost_messages += rc;
+            FH_LOG(LH, WARN, ("some gaps have expired, %d message(s) lost", rc));
             if (hook_alert) {
                 hook_alert(&rc, FH_ALERT_LOSS, conn);
             }
-            FH_LOG(LH, WARN, ("some gaps have expired, %d message(s) lost", rc));
         }
     }
 
