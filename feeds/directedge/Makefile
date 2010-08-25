@@ -13,9 +13,11 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with FH.  If not, see <http://www.gnu.org/licenses/>.
 
-SUBDIRS = shared itch bats directedge
+SUBDIRS = common v1
 
-all clean test:
+all clean dist rpmdist test:
 	@for dir in $(SUBDIRS); do  \
 		$(MAKE) -C $$dir $@;    \
 	done
+
+

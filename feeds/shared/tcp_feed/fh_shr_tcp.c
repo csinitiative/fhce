@@ -16,9 +16,7 @@
  */
 
 
-/*
- * OS Header files
- */
+/* System headers */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -30,9 +28,7 @@
 #include <sys/mman.h>
 #include <semaphore.h>
 
-/*
- * FH Common Header files
- */
+/* FH common headers */
 #include "fh_errors.h"
 #include "fh_util.h"
 #include "fh_log.h"
@@ -40,36 +36,17 @@
 #include "fh_plugin.h"
 #include "fh_config.h"
 
-/*
- * FH shared other headers
- */
-/* FH shared "other" headers */
+/* FH shared component headers */
 #include "fh_shr_config.h"
 #include "fh_shr_cfg_cmdline.h"
 #include "fh_shr_cfg_lh.h"
 #include "fh_shr_mgmt.h"
-
-
-/*
- * FH DirectEdge files
- */
-#include "fh_shr_tcp_lh.h"
 #include "fh_shr_tcp.h"
+#include "fh_shr_tcp_lh.h"
 
-
-/*
- * Global variables
- */
-int directedge_stopped = 0;
-
-#define FH_HOME                "/opt/csi/fh"
-#define FH_DIRECTEDGE_CONFIG   "directedge/etc/direct_edge.conf"
-#define FH_DIRECTEDGE_PLUGINS  "directedge/plugins"
-
-
-static fh_info_proc_t       proc_info;
-
-
+/* Global variables */
+static fh_info_proc_t proc_info;
+int                   directedge_stopped = 0;
 
 /*
  * Collect the status info about the Feed Handler
@@ -127,7 +104,7 @@ static void fh_tcp_sig_handle(int32_t signo)
 }
 
 /*
- * fh_dir_edge_sig_init
+ * fh_shr_tcp_sig_init
  *
  * This function takes care of the signal handling.
  */
@@ -170,9 +147,9 @@ void fh_shr_tcp_version(const fh_info_build_t *info, fh_shr_cfg_options_t *optio
 int fh_shr_tcp_main(int argc, char **argv, const char *cfg_tag,
                     const fh_info_build_t *info, fh_shr_tcp_cb_t *cb)
 {
-    fh_shr_cfg_options_t   options;
-    fh_shr_cfg_lh_proc_t   process_config;
-    fh_cfg_node_t          *config = NULL;
+    fh_shr_cfg_options_t    options;
+    fh_shr_cfg_lh_proc_t    process_config;
+    fh_cfg_node_t          *config      = NULL;
     char                   *thread_name = NULL;
 
    /* build structure of management callbacks */

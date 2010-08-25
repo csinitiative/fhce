@@ -28,7 +28,7 @@ include $(TOP)/build/defs.mk
 SUBDIRS  = common msg feeds mgmt
 TESTDIRS = test common feeds
 ALLDIRS	 = $(sort $(SUBDIRS) $(TESTDIRS))
-DISTDIRS = mgmt feeds/itch/multicast/v1 feeds/bats/multicast/v1
+DISTDIRS = mgmt feeds/itch/multicast/v1 feeds/bats/multicast/v1 feeds/directedge/v1
 
 all:
 	@for dir in $(SUBDIRS); do   \

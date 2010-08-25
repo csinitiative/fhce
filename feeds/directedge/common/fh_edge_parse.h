@@ -15,22 +15,12 @@
  * along with FH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FH_SHR_TCP_H
-#define FH_SHR_TCP_H
+#ifndef __FH_DIR_EDGE_PARSE_H__
+#define __FH_DIR_EDGE_PARSE_H__
 
-#include "fh_shr_tcp_lh.h"
+FH_STATUS fh_edge_parse_init(fh_shr_lh_proc_t *);
+FH_STATUS fh_edge_parse_msg(char *, uint32_t, char,fh_shr_lh_conn_t *,
+                                fh_shr_cfg_lh_line_t *, uint64_t *);
+FH_STATUS fh_edge_alarm(char *,int, int);
 
-/**
- *  @brief "Real" main function for TCP feed handlers
- *
- *  @param argc number of command line arguments passed along from main function
- *  @param argv array of command line arguments passed along from main function
- *  @param cfg_tag top level configuration block inside which all relevant config resides
- *  @param info feed handler build, version, etc. information
- *  @return return value which will in turn be returned by main function (and become the
- *          the application's exit code)
- */
-int fh_shr_tcp_main(int argc, char **argv, const char *cfg_tag,
-                    const fh_info_build_t *info, fh_shr_tcp_cb_t *cb);
-
-#endif /* FH_SHR_TCP_H */
+#endif

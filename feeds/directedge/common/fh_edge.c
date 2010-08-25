@@ -15,22 +15,54 @@
  * along with FH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FH_SHR_TCP_H
-#define FH_SHR_TCP_H
+/* system headers */
+#include <stdio.h>
+#include <stdlib.h>
 
+/* common FH headers */
+#include "fh_info.h"
 #include "fh_shr_tcp_lh.h"
+#include "fh_shr_tcp.h"
+
+/* Direct Edge headers */
+#include "fh_edge_revision.h"
+#include "fh_edge_parse.h"
+#include "fh_edge_connect.h"
+
+/* structure to describe the build environment of the binary produced from this code */
+static fh_info_build_t version_info = {
+    "DIRECTEDGE",
+    0,
+    BUILD_USER,
+    BUILD_HOST,
+    BUILD_ARCH,
+    BUILD_KVER,
+    BUILD_DATE,
+    BUILD_URL,
+    BUILD_REV
+};
 
 /**
- *  @brief "Real" main function for TCP feed handlers
+ *  @brief "Real" main function for DirectEdge feed handler
  *
  *  @param argc number of command line arguments passed along from main function
  *  @param argv array of command line arguments passed along from main function
- *  @param cfg_tag top level configuration block inside which all relevant config resides
- *  @param info feed handler build, version, etc. information
+ *  @param version ITCH feed handler version
  *  @return return value which will in turn be returned by main function (and become the
  *          the application's exit code)
  */
-int fh_shr_tcp_main(int argc, char **argv, const char *cfg_tag,
-                    const fh_info_build_t *info, fh_shr_tcp_cb_t *cb);
+int fh_edge_main(int argc, char **argv, int version)
+{
+    fh_shr_tcp_cb_t callbacks = {
+        fh_edge_parse_init,
+        fh_edge_parse_msg,
+        fh_edge_conn_login,
+        fh_edge_alarm,
+    };
 
-#endif /* FH_SHR_TCP_H */
+    /* set the proper version number in the version info struct */
+    version_info.version = version;
+
+    /* start the "real" feed handler */
+    return fh_shr_tcp_main(argc, argv, "edge", &version_info, &callbacks) ;
+}

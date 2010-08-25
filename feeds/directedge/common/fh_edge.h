@@ -15,22 +15,14 @@
  * along with FH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FH_SHR_TCP_H
-#define FH_SHR_TCP_H
+#ifndef __FH_DIR_EDGE_H__
+#define __FH_DIR_EDGE_H__
 
-#include "fh_shr_tcp_lh.h"
+extern int directedge_stopped;
 
-/**
- *  @brief "Real" main function for TCP feed handlers
- *
- *  @param argc number of command line arguments passed along from main function
- *  @param argv array of command line arguments passed along from main function
- *  @param cfg_tag top level configuration block inside which all relevant config resides
- *  @param info feed handler build, version, etc. information
- *  @return return value which will in turn be returned by main function (and become the
- *          the application's exit code)
+/*
+ * Shared main for all DIRECTEDGE versions
  */
-int fh_shr_tcp_main(int argc, char **argv, const char *cfg_tag,
-                    const fh_info_build_t *info, fh_shr_tcp_cb_t *cb);
+int fh_edge_main(int argc, char *argv[], int directedge_version);
 
-#endif /* FH_SHR_TCP_H */
+#endif /* __FH_DIR_EDGE_H__ */

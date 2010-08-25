@@ -44,10 +44,10 @@ const char *fh_shr_cfg_home()
  */
 void fh_shr_cfg_set_defaults(fh_shr_cfg_options_t *options, const char *name, int version)
 {
-    char *fh_home;
-    char  real_config_dir[PATH_MAX + 1];
-    char  real_plugin_dir[PATH_MAX + 1];
-    char  real_config_file[NAME_MAX + 1];
+    const char *fh_home;
+    char        real_config_dir[PATH_MAX + 1];
+    char        real_plugin_dir[PATH_MAX + 1];
+    char        real_config_file[NAME_MAX + 1];
 
     // by default all options are 0 or NULL
     memset(options, 0, sizeof(fh_shr_cfg_options_t));
@@ -56,10 +56,7 @@ void fh_shr_cfg_set_defaults(fh_shr_cfg_options_t *options, const char *name, in
     options->version = version;
 
     // override default FH_HOME if the FH_HOME env. variable is set
-    fh_home = getenv("FH_HOME");
-    if (fh_home == NULL) {
-        fh_home = FH_HOME;
-    }
+    fh_home = fh_shr_cfg_home();
 
     // generate "real" config/plugin path information using the name of this feed handler
     sprintf(real_config_dir, FH_SHR_CFG_DIR, name);

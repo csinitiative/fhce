@@ -799,7 +799,7 @@ static FH_STATUS add_line(const fh_cfg_node_t *config, const char *name,
     fh_shr_cfg_lh_line_t *line;
 
     /* fetch the lines node */
-    lines_node = fh_cfg_get_node(config, "direct_edge.lines");
+    lines_node = fh_cfg_get_node(config, "edge.lines");
     if (lines_node == NULL) {
         FH_LOG(CSI, ERR, ("missing configuration option 'lines'"));
         return FH_ERROR;
@@ -865,7 +865,7 @@ FH_STATUS fh_shr_cfg_tcp_lh_load(const char *process, const fh_cfg_node_t *confi
     memset(lh_config, 0, sizeof(fh_shr_cfg_lh_proc_t));
 
     /* build the full, expected node name of the process configuration and fetch the node */
-    sprintf(process_node_name, "direct_edge.processes.%s", process);
+    sprintf(process_node_name, "edge.processes.%s", process);
     process_node = fh_cfg_get_node(config, process_node_name);
 
     /* if the returned node is NULL, the process config doesn't exist */
@@ -895,8 +895,8 @@ FH_STATUS fh_shr_cfg_tcp_lh_load(const char *process, const fh_cfg_node_t *confi
     }
 
     /* load table configurations */
-    fh_shr_cfg_tbl_load(config, "direct_edge.symbol_table", &lh_config->symbol_table);
-    fh_shr_cfg_tbl_load(config, "direct_edge.order_table", &lh_config->order_table);
+    fh_shr_cfg_tbl_load(config, "edge.symbol_table", &lh_config->symbol_table);
+    fh_shr_cfg_tbl_load(config, "edge.order_table", &lh_config->order_table);
 
     /* load lines node for this process */
     lines_node = fh_cfg_get_node(process_node, "lines");
