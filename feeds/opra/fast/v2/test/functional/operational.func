@@ -1,0 +1,16 @@
+Feature: OPRA v2 feed handler is able to start
+  In order to ensure additional tests can be run
+  The feed handler must be able to start up and accept data
+ 
+  Scenario: Ensure that the OPRA v2 feed handler starts properly and shuts down with a TERM signal
+	Given an OPRA feed handler
+	And with code in feeds/opra/fast/v2
+	And with a binary named fhopra_v2 
+    And with the arguments "-s -d"
+
+	When the feed handler is compiled
+	And run
+	
+    Then it should produce the string "Start thread: name:OPRA_LH_0" within 60 seconds
+	And terminate on the signal TERM within 60 seconds
+	And exit with code 0

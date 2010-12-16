@@ -13,9 +13,9 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with FH.  If not, see <http://www.gnu.org/licenses/>.
 
-SUBDIRS = shared itch bats directedge opra
+SUBDIRS = unit
 
-all clean test:
+all clean:
 	@for dir in $(SUBDIRS); do  \
 		$(MAKE) -C $$dir $@;    \
 	done

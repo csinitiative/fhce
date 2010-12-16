@@ -13,7 +13,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with FH.  If not, see <http://www.gnu.org/licenses/>.
 
-SUBDIRS = shared itch bats directedge opra
+SUBDIRS = common codec v2
 
 all clean test:
 	@for dir in $(SUBDIRS); do  \

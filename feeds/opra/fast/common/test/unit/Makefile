@@ -14,40 +14,34 @@
 #  along with FH.  If not, see <http://www.gnu.org/licenses/>.
 
 # ------------------------------------------------------------------------------
-# Global "stuff"
+# Include the main makefile includes
 # ------------------------------------------------------------------------------
 
-TOP = .
-
+TOP = ../../../../../..
 include $(TOP)/build/defs.mk
 
 # ------------------------------------------------------------------------------
-# Clean locally and pass all major targets on to subdirectories
+# Variables related to target code
 # ------------------------------------------------------------------------------
 
-SUBDIRS   = common msg feeds mgmt
-TESTDIRS  = test common feeds
-ALLDIRS	  = $(sort $(SUBDIRS) $(TESTDIRS))
-DISTDIRS  = mgmt feeds/itch/multicast/v1 feeds/bats/multicast/v1 feeds/directedge/v1
-DISTDIRS += feeds/opra/fast/v2
+COMMONDIR		= $(TOP)/common
+MISSINGDIR		= $(TOP)/common/missing
+COMMONLIB		= $(COMMONDIR)/$(LIBDIR)/libfh.a
 
-all:
-	@for dir in $(SUBDIRS); do   \
-		$(MAKE) -C $$dir $@;     \
-	done
+OPRADIR			= ../..
+OPRALIB			= $(OPRADIR)/$(LIBDIR)/libfhopra.a
 
-dist tar rpmdist:
-	@for dir in $(DISTDIRS); do  \
-		$(MAKE) -C $$dir $@;     \
-	done
+TARGETDIRS		= $(OPRADIR) $(COMMONDIR) $(MISSINGDIR)
+TARGETLIBS		= $(OPRALIB) $(COMMONLIB)
 
-clean:
-	rm -rf $(DISTDIR) $(TARDIR) $(RPMDIR)
-	@for dir in $(ALLDIRS); do   \
-		$(MAKE) -C $$dir $@;     \
-	done
+$(COMMONLIB): FORCE
+	$(MAKE) -C $(COMMONDIR)
 
-test: FORCE
-	@for dir in $(TESTDIRS); do  \
-		$(MAKE) -C $$dir $@;     \
-	done
+$(OPRALIB): FORCE
+	$(MAKE) -C $(OPRADIR)
+
+# ------------------------------------------------------------------------------
+# Include the test makefile includes
+# ------------------------------------------------------------------------------
+
+include $(TOP)/build/test.mk

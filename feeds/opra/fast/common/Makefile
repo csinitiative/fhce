@@ -13,93 +13,66 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with FH.  If not, see <http://www.gnu.org/licenses/>.
 
-# ------------------------------------------------------------------------------
-# Macro definition
-# ------------------------------------------------------------------------------
+TOP = ../../../..
 
-%define instdir /opt/csi/fh/itch
-%define makedir feeds/itch/multicast/v1
-%define plugdir plugins/sample/itch
-
+include $(TOP)/build/defs.mk
 
 # ------------------------------------------------------------------------------
-# Introduction section
+# Set up directory/target variables
 # ------------------------------------------------------------------------------
 
-summary: TotalView-ITCH 3.1 feed handler component of the FeedHandler suite
-name: csifh-itchv1
-requires: csifh-core >= %{version}
-requires: expect
-provides: csifh-itch
-version: %{version}
-release: 1
-group: Feed Handlers
-vendor: Collaborative Software Foundation
-url: http://openmarketdata.org
-license: LGPLv3
-source: %{name}-%{version}.tar.gz
-%description
-The Collaborative Software Foundation Feed Handler is an open market data
-feed handler. It is designed to be very fast while simultaneously being
-flexible and extensible.
+DIRS 		 = $(OBJDIR) $(LIBDIR) $(DEPDIR)
+INCLDIRS = common common/missing mgmt/lib mgmt/lib/admin msg
 
-This package contains the ITCH v1 feed handler(s).
-
+# Basic sources and targets
+SRCS     = $(wildcard *.c)
+OBJS     = $(addprefix $(OBJDIR)/,$(SRCS:.c=.o))
+DEPS 		 = $(addprefix $(DEPDIR)/,$(SRCS:.c=.P))
 
 # ------------------------------------------------------------------------------
-# Prep section (prepare source for build/packaging)
+# Compile flags and includes
 # ------------------------------------------------------------------------------
 
-%prep
-%setup -n %{tgzroot}
-
+INCLUDES = $(addprefix -I$(TOP)/,$(INCLDIRS)) -I../codec
 
 # ------------------------------------------------------------------------------
-# Build section
+# Versioning
 # ------------------------------------------------------------------------------
 
-%build
-make -C %{makedir}
-make -C %{plugdir}
-
+REV_FILE = fh_opra_revision.h
 
 # ------------------------------------------------------------------------------
-# Install section
+# Target - OPRA Common library
 # ------------------------------------------------------------------------------
 
-%install
-INSTROOT=%{buildroot} make -C %{makedir} dist
-INSTROOT=%{buildroot} make -C %{plugdir} dist
-
+LIB      = $(LIBDIR)/libfhopra.a
 
 # ------------------------------------------------------------------------------
-# Clean section
+# Generic make targets
 # ------------------------------------------------------------------------------
 
-%clean
-rm -rf $RPM_BUILD_ROOT
+all: $(DIRS) $(LIB)
 
+$(LIB): $(REV_FILE) $(OBJS)
+	$(AR) rc $@ $(OBJS)
+	$(RANLIB) $@
 
-# ------------------------------------------------------------------------------
-# Files section
-# ------------------------------------------------------------------------------
+$(REV_FILE):
+	@$(MKREVISION) $@
 
-%files
-%{instdir}/bin
-%{instdir}/plugins
-%config %{instdir}/etc
+clean:
+	rm -rf $(DIRS) $(REV_FILE)
+	$(MAKE) -C test $@
 
-
-# ------------------------------------------------------------------------------
-# Post-install script
-# ------------------------------------------------------------------------------
-
-%post
-
+test: FORCE
+	$(MAKE) -C test all
 
 # ------------------------------------------------------------------------------
-# Pre-uninstall script
+# Build the object files
 # ------------------------------------------------------------------------------
 
-%preun
-rm -rf %{instdir}/bin/fhitch
+$(OBJDIR)/%.o : %.c
+	@$(MAKEDEPEND)
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+-include $(DEPS)

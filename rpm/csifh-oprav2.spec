@@ -17,33 +17,34 @@
 # Macro definition
 # ------------------------------------------------------------------------------
 
-%define instdir /opt/csi/fh/itch
-%define makedir feeds/itch/multicast/v1
-%define plugdir plugins/sample/itch
+%define instdir /opt/csi/fh/opra
+%define makedir feeds/opra/fast/v2
+%define plugdir plugins/sample/opra
 
 
 # ------------------------------------------------------------------------------
 # Introduction section
 # ------------------------------------------------------------------------------
 
-summary: TotalView-ITCH 3.1 feed handler component of the FeedHandler suite
-name: csifh-itchv1
+summary: OPRA v2 feed handler component of the CSI FH feed handler suite
+name: csifh-oprav2
 requires: csifh-core >= %{version}
 requires: expect
-provides: csifh-itch
+provides: csifh-opra
+conflicts: csifh-oprav1
 version: %{version}
 release: 1
 group: Feed Handlers
-vendor: Collaborative Software Foundation
-url: http://openmarketdata.org
+vendor: Collaborative Software Initiative
+url: http://openmarketdata.com
 license: LGPLv3
 source: %{name}-%{version}.tar.gz
 %description
-The Collaborative Software Foundation Feed Handler is an open market data
+The Collaborative Software Initiative Feed Handler is an open market data
 feed handler. It is designed to be very fast while simultaneously being
 flexible and extensible.
 
-This package contains the ITCH v1 feed handler(s).
+This package contains the OPRA v2 feed handler(s).
 
 
 # ------------------------------------------------------------------------------
@@ -95,6 +96,7 @@ rm -rf $RPM_BUILD_ROOT
 # ------------------------------------------------------------------------------
 
 %post
+ln -sf %{instdir}/bin/fhopra_v2 %{instdir}/bin/fhopra
 
 
 # ------------------------------------------------------------------------------
@@ -102,4 +104,4 @@ rm -rf $RPM_BUILD_ROOT
 # ------------------------------------------------------------------------------
 
 %preun
-rm -rf %{instdir}/bin/fhitch
+rm -rf %{instdir}/bin/fhopra
