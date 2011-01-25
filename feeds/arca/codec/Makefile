@@ -13,9 +13,29 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with FH.  If not, see <http://www.gnu.org/licenses/>.
 
-SUBDIRS = shared itch bats directedge opra arca
+TOP = ../../..
 
-all clean test:
-	@for dir in $(SUBDIRS); do  \
-		$(MAKE) -C $$dir $@;    \
-	done
+include $(TOP)/build/defs.mk
+
+CC = gcc
+#CFLAGS = -Wall -g
+#turn off warnings; maximize optimization
+CFLAGS = -O3
+PROGRAM = AB_Fast_opt
+SRCS = AB_Fast.c newFastDecode.c
+HDRS = 	AB_Fast.h ArcaL2Msg.h
+OBJS = AB_Fast.o newFastDecode.o
+LIBS = -lrt -lpthread -L/usr/local/lib
+
+all: $(PROGRAM)
+
+$(PROGRAM): $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS)  -o $(PROGRAM) $(LIBS)
+
+clean:
+	- rm -f $(PROGRAM) $(OBJS) *.o *.P core
+
+install: all
+
+test:
+

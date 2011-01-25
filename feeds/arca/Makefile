@@ -13,7 +13,8 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with FH.  If not, see <http://www.gnu.org/licenses/>.
 
-SUBDIRS = shared itch bats directedge opra arca
+# build subdirs by collecting all directory entries that are *not* 'Makefile'
+SUBDIRS = codec common multicast trade
 
 all clean test:
 	@for dir in $(SUBDIRS); do  \

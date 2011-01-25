@@ -13,9 +13,17 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with FH.  If not, see <http://www.gnu.org/licenses/>.
 
-SUBDIRS = shared itch bats directedge opra arca
+TOP = ../../..
 
-all clean test:
+include $(TOP)/build/defs.mk
+
+# ------------------------------------------------------------------------------
+# Targets
+# ------------------------------------------------------------------------------
+
+SUBDIRS = common v1
+
+all clean dist: FORCE
 	@for dir in $(SUBDIRS); do  \
 		$(MAKE) -C $$dir $@;    \
 	done

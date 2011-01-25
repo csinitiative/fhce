@@ -1,0 +1,31 @@
+FeedGroup struct is a marshalling of all the properties associated with a line
+of a multicast feed stream. It contains configuration parameters, 
+state parameters, and current statistics that are associated with a line. 
+For Arca Book multicast for equities there are 10 lines that make up 3 distinct 
+feeds that all use the same feed protocols. It also has functions that are associated with it. In some ways it is a primitive class object. Unlike class object
+there is no inheritance.
+
+The FeedGroup construct supports 2 mirrored multicast feed groups. It can be 
+used to for Itch3 or a line of Arca Mcast. It has support for a mirrored
+multicast group for retransmission of lost packets. It has support for a 
+mirrored multicast group for periodic refresh of books. A mirrored multicast
+group can be configured as not used. Itch3 does not use a periodic refresh so 
+it is possible to configure a feedGroup for Itch3 that does not use those
+fields. A mirrored multicast group can be configured so that only the primary
+multicast group is used. Itch3 as currently implemented only supports a single
+retransmission source so it can use the primary of the retransmission 
+multicast group. 
+
+A goal for the feedGroup is to define generic function prototypes that support
+a variety of multicast feeds. If additional fields are needed, then we can add them. If feed behavior is different, then we rewrite the behavior of the affected
+functions. Those that do not vary can be reused as is. 
+
+The over arching goal of a feedGroup is to promote reuse of code base. It will 
+provide a starting point for supporting multicast feeds. It will provide a starting data model, function prototypes, and function implementations. It will 
+provide a familiar data model and logic flow that can then be modified where
+necessary to implement a specific feed. As new things have to be added to a
+specific implementation, they can be evaluated for inclusion into the data 
+model, included via configuration, included via condition compilation, or left
+as specialized code. 
+
+   
